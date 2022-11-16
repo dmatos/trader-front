@@ -1,5 +1,17 @@
-<p> I want a text field as a filter and list of items below it </p>
-<p> I want a service that return tickers based on a filter that can look for tickers and exchanges at the same time</p>
-<p> I want to list filtered tickers or all of them if there is no filter </p>
-<p> I want to select tickers from the list so I can display their candlestick on the plotter </p>
-<p style="color: red">I want a date picker so I can select the date range for the candlestick to be plotted</p>
+<div class="row">
+  <div class="col">
+    <input type="text"
+    (change)="onSearchTicker($event)">
+  </div>
+</div>
+<div class="row">
+  <ul>
+      <li *ngFor="let ticker of tickers$ | async">
+        <a
+        (click)="onSelectTicker(ticker)"
+        >
+          {{ticker.code}}:{{ticker.stockExchangeCode}}
+        </a>
+      </li>
+  </ul>
+</div>
