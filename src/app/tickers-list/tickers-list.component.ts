@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ticker} from "../model/ticker.model";
 import {TickersService} from "../service/tickers.service";
 import {select, Store} from "@ngrx/store";
@@ -34,7 +34,9 @@ export class TickersListComponent implements OnInit {
   }
 
   onSearchTicker(event: any){
-    console.log(event.target.value);
-    this.store.dispatch(searchTickersByCode(event.target.value));
+    if(event && event.target && event.target.value){
+      const code = event.target.value;
+      this.store.dispatch(searchTickersByCode({code}));
+    }
   }
 }

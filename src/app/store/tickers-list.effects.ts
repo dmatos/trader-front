@@ -31,7 +31,6 @@ export class TickersListEffects {
   searchTickersByCode$ = createEffect((): Observable<Action> =>
     this.actions$.pipe(
       ofType(searchTickersByCode),
-      tap((code) => console.log(code)),
       concatMap(({code}) => this.tickersService.searchTickersByCode(code).pipe(
         map(tickers => searchTickersByCodeSuccess({tickers: tickers})),
         catchError(error => of(getAllTickersFail({error: error})))
