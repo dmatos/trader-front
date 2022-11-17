@@ -37,6 +37,8 @@ export class TickersListComponent implements OnInit {
     if(event && event.target && event.target.value){
       const code = event.target.value;
       this.store.dispatch(searchTickersByCode({code}));
+    } else {
+      this.getAllTickers();
     }
   }
 }

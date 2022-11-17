@@ -15,7 +15,6 @@ export class TickersService {
   }
 
   searchTickersByCode(code: string): Observable<Array<Ticker>>{
-    console.log(code);
     return this.httpClient.get<ResponseModel>('http://localhost:8080/intraday/tickers/search/'+code)
       .pipe(map( (response) => response.data));
   }

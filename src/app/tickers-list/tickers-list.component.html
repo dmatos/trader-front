@@ -2,20 +2,22 @@
   <div class="col">
     <input
       type="text"
-      (change)="onSearchTicker($event)">
+      (input)="onSearchTicker($event)">
   </div>
 </div>
 <hr>
 <div class="row">
   <div class="col">
-    <ul>
-      <li *ngFor="let ticker of tickers$ | async">
-        <a
-          (click)="onSelectTicker(ticker)"
-        >
-          {{ticker.code}}:{{ticker.stockExchangeCode}}
-        </a>
-      </li>
-    </ul>
+    <div class="nav">
+      <ul>
+        <li class="no-bullets" *ngFor="let ticker of tickers$ | async">
+          <a
+            (click)="onSelectTicker(ticker)"
+          >
+            {{ticker.code}}:{{ticker.stockExchangeCode}}
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
