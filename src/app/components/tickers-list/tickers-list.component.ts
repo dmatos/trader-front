@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Ticker} from "../model/ticker.model";
-import {TickersService} from "../service/tickers.service";
+import {Ticker} from "../../model/ticker.model";
 import {select, Store} from "@ngrx/store";
 import {Observable} from "rxjs";
-import {getAllTickers, searchTickersByCode} from "../store/tickers-list.actions";
-import {TickersState} from "../store/tickers-list.reducer";
-import {selectTickers} from "../store/tickers-list.selector";
+import {getAllTickers, searchTickersByCode, selectTicker} from "../../store/tickers/tickers-list.actions";
+import {selectTickers} from "../../store/tickers/tickers-list.selector";
+import {TickersState} from "../../store/tickers/tickers-list.state";
 
 @Component({
   selector: 'app-tickers-list',
@@ -16,7 +15,6 @@ export class TickersListComponent implements OnInit {
   tickers$: Observable<Ticker[]>;
 
   constructor(
-    private tickerService: TickersService,
     private store: Store<TickersState>) {
     this.tickers$ = this.store.pipe(select(selectTickers));
   }
@@ -31,6 +29,12 @@ export class TickersListComponent implements OnInit {
 
   onSelectTicker(ticker: Ticker){
     console.log(ticker);
+    this.store.dispatch(selectTicker({
+      tickerCode: ticker.code,
+      stockExchangeCode: ticker.stockExchangeCode,
+      begin: '2022-11-17T00:58:42.783Z',
+      end: '2022-11-17T23:58:42.783Z',
+      duration: 5}));
   }
 
   onSearchTicker(event: any){

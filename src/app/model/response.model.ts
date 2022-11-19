@@ -1,5 +1,5 @@
 export class ResponseModel{
   timestamp: string = '';
-  data = [];
+  data: any;
   status: string = '';
 }

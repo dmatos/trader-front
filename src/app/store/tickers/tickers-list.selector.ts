@@ -1,5 +1,6 @@
 import {createFeatureSelector, createSelector} from "@ngrx/store";
-import {tickersFeatureKey, TickersState} from "./tickers-list.reducer";
+import {tickersFeatureKey} from "./tickers-list.reducer";
+import {TickersState} from "./tickers-list.state";
 
 export const selectTickersState = createFeatureSelector<TickersState>(
   tickersFeatureKey

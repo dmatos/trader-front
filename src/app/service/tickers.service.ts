@@ -4,18 +4,16 @@ import {Ticker} from "../model/ticker.model";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {ResponseModel} from "../model/response.model";
+import {environment} from "../../environments/environment";
 
 @Injectable({providedIn: 'root'})
 export class TickersService {
 
-  tickers: Ticker[];
-
   constructor(private httpClient: HttpClient){
-    this.tickers = [];
   }
 
   searchTickersByCode(code: string): Observable<Array<Ticker>>{
-    return this.httpClient.get<ResponseModel>('http://localhost:8080/intraday/tickers/search/'+code)
+    return this.httpClient.get<ResponseModel>(environment.apiUrl+'/intraday/tickers/search/'+code)
       .pipe(map( (response) => response.data));
   }
 

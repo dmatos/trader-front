@@ -3,6 +3,7 @@
     "@ngrx/effects": "^14.3.2",
     "@ngrx/store": "^14.3.2",
     "@ngrx/store-devtools": "^14.3.2",
+    "angular-google-charts": "^2.2.3",
     "bootstrap": "^3.4.1",
     "jquery": "^3.6.1",
     "rxjs": "^7.5.7"
@@ -12,6 +13,7 @@
     "@angular/cli": "^14.2.8",
     "@angular/core": "^14.2.8",
     "@angular/platform-browser": "^14.2.8",
-    "@angular/platform-browser-dynamic": "^14.2.8"
+    "@angular/platform-browser-dynamic": "^14.2.8",
+    "@types/jasmine": "^4.3.0"
   }
 }
