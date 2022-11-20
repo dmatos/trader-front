@@ -13,14 +13,18 @@ import {TickersState} from "../../store/tickers/tickers-list.state";
 })
 export class TickersListComponent implements OnInit {
   tickers$: Observable<Ticker[]>;
+  public tickers: Ticker[];
+  public filteredTickers: Ticker[];
 
   constructor(
     private store: Store<TickersState>) {
     this.tickers$ = this.store.pipe(select(selectTickers));
+    this.tickers = this.filteredTickers = [];
   }
 
   ngOnInit(): void {
     this.getAllTickers();
+    this.tickers$.subscribe((tickers) => this.tickers = this.filteredTickers = tickers);
   }
 
   getAllTickers(){
@@ -28,7 +32,6 @@ export class TickersListComponent implements OnInit {
   }
 
   onSelectTicker(ticker: Ticker){
-    console.log(ticker);
     this.store.dispatch(selectTicker({
       tickerCode: ticker.code,
       stockExchangeCode: ticker.stockExchangeCode,
@@ -39,8 +42,8 @@ export class TickersListComponent implements OnInit {
 
   onSearchTicker(event: any){
     if(event && event.target && event.target.value){
-      const code = event.target.value;
-      this.store.dispatch(searchTickersByCode({code}));
+      const code = event.target.value.toUpperCase();
+      this.filteredTickers = this.tickers.filter(t => t.code.match('.*'+code+'.*'));
     } else {
       this.getAllTickers();
     }

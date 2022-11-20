@@ -1,0 +1,5 @@
+.nav{
+  max-height: 99vh;
+  max-width: 200vh;
+  overflow: auto;
+}

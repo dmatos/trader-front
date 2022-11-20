@@ -1,11 +1,13 @@
-<google-chart #chart
-              [title]="title"
-              [type]="type"
-              [data]="data"
-              [options]="options"
-              [width]="width"
-              [height]="height"
-              (select)="onSelect($event)"
-              (mouseover)="onMouseOver($event)"
-              (mouseleave)="onMouseLeave($event)">
-</google-chart>
+<div class="nav">
+  <google-chart #chart
+                [title]="title"
+                [type]="type"
+                [data]="data"
+                [options]="options"
+                [width]="width"
+                [height]="height"
+                (select)="onSelect($event)"
+                (mouseover)="onMouseOver($event)"
+                (mouseleave)="onMouseLeave($event)">
+  </google-chart>
+</div>

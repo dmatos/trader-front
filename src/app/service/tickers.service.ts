@@ -18,7 +18,7 @@ export class TickersService {
   }
 
   getAllTickers(): Observable<Array<Ticker>> {
-    return this.httpClient.get<ResponseModel>('http://localhost:8080/intraday/tickers/search/_')
+    return this.httpClient.get<ResponseModel>(environment.apiUrl+'/intraday/tickers/search/_')
       .pipe(map( (response) => response.data));
   }
 }

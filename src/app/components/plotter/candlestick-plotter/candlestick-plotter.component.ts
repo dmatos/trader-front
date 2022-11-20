@@ -1,19 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ChartMouseLeaveEvent,
-  ChartMouseOverEvent,
-  ChartSelectionChangedEvent,
-  ChartType,
-  GoogleChartComponent,
-  GoogleChartsModule
-} from "angular-google-charts";
+import {Component, OnInit} from '@angular/core';
+import {ChartMouseLeaveEvent, ChartMouseOverEvent, ChartSelectionChangedEvent, ChartType} from "angular-google-charts";
 import {CandlestickState} from "../../../store/candlestick/candlestick.state";
 import {select, Store} from "@ngrx/store";
 import {Observable} from "rxjs";
-import {Ticker} from "../../../model/ticker.model";
-import {CandlestickModel} from "../../../model/candlestick.model";
 import {selectCandlestickState} from "../../../store/candlestick/candlestick.selector";
-import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-candlestick-plotter',
@@ -24,7 +14,7 @@ export class CandlestickPlotterComponent implements OnInit {
 
   candlestick$: Observable<CandlestickState>;
 
-  title = 'chart example';
+  title = 'Canldestick';
   type = ChartType.CandlestickChart
   data = [
     ['09:05', 20, 28, 38, 45]
@@ -33,11 +23,12 @@ export class CandlestickPlotterComponent implements OnInit {
     legend:'none',
     candlestick: {
       fallingColor: { strokeWidth: 2, stroke:'#a52714' }, // red
-      risingColor: { strokeWidth: 2, stroke: '#0f9d58' }   // green
-    }
+      risingColor: { strokeWidth: 2, stroke: '#0f9d58' }, // green
+    },
+    hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
   };
-  width = 3000;
-  height = 600;
+  width = 2000;
+  height = 400;
 
 
   constructor(
@@ -48,11 +39,14 @@ export class CandlestickPlotterComponent implements OnInit {
 
   ngOnInit(): void {
     this.candlestick$.subscribe( (candlestickState) => {
-        if(candlestickState.candlestick.candles.length > 0) {
+        if(candlestickState && candlestickState.candlestick && candlestickState.candlestick.candles && candlestickState.candlestick.candles.length > 0) {
           this.title = candlestickState.candlestick.stockExchangeCode+':'+candlestickState.candlestick.tickerCode;
-          this.data = candlestickState.candlestick.candles.map(candle => [candle.begin, candle.low, candle.open, candle.close, candle.high])
-          console.log('data on subscription');
-          console.log(this.data);
+          const date = '00:00:00';
+          this.data = candlestickState.candlestick.candles.map(candle => {
+            const regexArray = candle.end.match(/\d\d:\d\d:\d\d/);
+            const date = regexArray?regexArray[0]:'0';
+            return [date, candle.low, candle.open, candle.close, candle.high]
+          })
         }
       }
     );
