@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Ticker} from "../../model/ticker.model";
 import {select, Store} from "@ngrx/store";
 import {Observable} from "rxjs";
-import {getAllTickers, searchTickersByCode, selectTicker} from "../../store/tickers/tickers-list.actions";
+import {getAllTickers, selectTicker} from "../../store/tickers/tickers-list.actions";
 import {selectTickers} from "../../store/tickers/tickers-list.selector";
 import {TickersState} from "../../store/tickers/tickers-list.state";
 
@@ -15,11 +15,13 @@ export class TickersListComponent implements OnInit {
   tickers$: Observable<Ticker[]>;
   public tickers: Ticker[];
   public filteredTickers: Ticker[];
+  public date: string;
 
   constructor(
     private store: Store<TickersState>) {
     this.tickers$ = this.store.pipe(select(selectTickers));
     this.tickers = this.filteredTickers = [];
+    this.date = new Date().toISOString();
   }
 
   ngOnInit(): void {
@@ -32,11 +34,17 @@ export class TickersListComponent implements OnInit {
   }
 
   onSelectTicker(ticker: Ticker){
+    let begin = new Date(this.date);
+    begin.setHours(0);
+    begin.setMinutes(0);
+    let end = new Date(this.date);
+    end.setHours(23);
+    end.setMinutes(59);
     this.store.dispatch(selectTicker({
       tickerCode: ticker.code,
       stockExchangeCode: ticker.stockExchangeCode,
-      begin: '2022-11-17T00:58:42.783Z',
-      end: '2022-11-17T23:58:42.783Z',
+      begin: begin.toISOString(),
+      end: end.toISOString(),
       duration: 5}));
   }
 

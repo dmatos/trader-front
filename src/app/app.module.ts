@@ -16,7 +16,7 @@ import { CandlestickPlotterComponent } from './components/plotter/candlestick-pl
 import {PiechartPlotterComponent} from "./components/plotter/piechart-plotter/piechart-plotter.component";
 import { CombochartPlotterComponent } from './components/plotter/combochart-plotter/combochart-plotter.component';
 import {CandlestickEffects} from "./store/candlestick/candlestick.effects";
-import {candlestickReducer} from "./store/candlestick/candlestick.reducer";
+import {FormsModule} from "@angular/forms";
 import {reducers} from "./store";
 
 @NgModule({
@@ -32,6 +32,7 @@ import {reducers} from "./store";
     BrowserModule,
     HttpClientModule,
     GoogleChartsModule,
+    FormsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, CandlestickEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
