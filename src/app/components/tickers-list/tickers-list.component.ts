@@ -41,14 +41,10 @@ export class TickersListComponent implements OnInit {
     this.onSelectTicker(this.selectedTicker);
   }
 
-  convertDateToUTC(date: Date) {
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-  }
-
   onSelectTicker(ticker: Ticker|null){
     if(!ticker) return;
-    let begin = this.convertDateToUTC(new Date(this.date));
-    let end = this.convertDateToUTC(new Date(this.date));
+    let begin = new Date(this.date);
+    let end = new Date(this.date);
     let beginStr = begin.toISOString();
     let endStr = end.toISOString();
     beginStr = beginStr.replace(/(T..:..)/, 'T00:00');
