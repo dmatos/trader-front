@@ -1,0 +1,6 @@
+.plotter{
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-rows: 1fr 1fr;
+}

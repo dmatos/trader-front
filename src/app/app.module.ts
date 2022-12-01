@@ -11,6 +11,7 @@ import {TickersListEffects} from "./store/tickers/tickers-list.effects";
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import {HttpClientModule} from "@angular/common/http";
+import {CommonModule} from "@angular/common";
 import {GoogleChartsModule} from "angular-google-charts";
 import { CandlestickPlotterComponent } from './components/plotter/candlestick-plotter/candlestick-plotter.component';
 import {PiechartPlotterComponent} from "./components/plotter/piechart-plotter/piechart-plotter.component";
@@ -33,6 +34,7 @@ import {reducers} from "./store";
     HttpClientModule,
     GoogleChartsModule,
     FormsModule,
+    CommonModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, CandlestickEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })

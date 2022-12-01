@@ -1,21 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
-/*@import '~bootstrap/dist/css/bootstrap.min.css';*/
-.center {
-  margin: auto;
-}
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: sans-serif;
+
+  /*border: 1px solid red;*/
 }
 
-[class*="col-"] {
-  float: left;
-  padding: 1px;
-  border: 1px solid red;
+app-root{
+  display: grid;
 }
 
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
+.overflow{
+  display: grid;
+  overflow: auto;
 }

@@ -1,33 +1,42 @@
-<div class="center">
-  <hr>
-  <div class="row center input">
-    <div class="col center-text">
-      <input type="date" [(ngModel)]="date" name="date">
+<div class="tickers-list-container">
+  <div class="search-params">
+    <div class="input-date">
+       <input
+         class="text-align-right"
+         type="date"
+         [(ngModel)]="date"
+         name="date"
+       (change)="onInputChange()">
     </div>
-  </div>
-  <hr>
-  <div class="row center input">
-    <div class="col center-text">
+    <div class="input-number">
       <input
-        type="text"
-        class="center"
-        (input)="onSearchTicker($event)">
+        class="text-align-right"
+        [(ngModel)]="duration"
+        type="number"
+        min="2"
+        max="99"
+        step="1"
+        value="5"
+      (change)="onInputChange()">
     </div>
   </div>
-  <hr>
-  <div class="row center">
-    <div class="col center">
-      <div class="nav center">
-        <ul>
-          <li class="no-bullets center" *ngFor="let ticker of filteredTickers">
-            <a
-              (click)="onSelectTicker(ticker)"
-            >
-              {{ticker.code}}:{{ticker.stockExchangeCode}}
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <div class="ticker-code">
+    <input
+      type="text"
+      class="ticker-code-input"
+      placeholder="TICKER CODE"
+      [(ngModel)]="tickerCode"
+      (input)="onSearchTicker()">
+  </div>
+  <div class="overflow tickers-list">
+    <ul>
+      <li class="no-bullets" *ngFor="let ticker of filteredTickers">
+        <a
+          (click)="onSelectTicker(ticker)"
+        >
+          {{ticker.code}}:{{ticker.stockExchangeCode}}
+        </a>
+      </li>
+    </ul>
   </div>
 </div>

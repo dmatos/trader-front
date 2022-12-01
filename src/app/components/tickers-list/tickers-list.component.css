@@ -1,20 +1,52 @@
-div.input{
-  max-height: 2vh;
+.tickers-list-container{
+  display: grid;
+  grid-template-columns: auto;
+  row-gap: 15px;
+  font-size: 22px;
+  align-self: end;
+  justify-self: start;
 }
 
-.nav{
-  max-height: 83vh;
-  overflow: auto;
+.ticker-code{
+  display: grid;
 }
 
-input{
-  vertical-align: middle;
+.search-params{
+  display: grid;
+  justify-items: start;
+  grid-template-columns: auto auto;
+}
+
+.input-date{
+  justify-self: stretch;
+  justify-items: stretch;
+}
+
+.input-number{
+  justify-self: end;
+}
+
+.tickers-list{
+  display: grid;
+  max-height: 90vh;
 }
 
 .no-bullets{
   list-style-type: none;
 }
 
-.center-text {
-  text-align:center;
+.text-align-right{
+  text-align: center;
+  font-size: 22px;
 }
+
+.ticker-code-input{
+  text-align: center;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+a:hover{
+  cursor: pointer;
+}
+

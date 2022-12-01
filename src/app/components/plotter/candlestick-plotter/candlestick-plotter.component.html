@@ -1,13 +1,19 @@
-<div class="nav">
+<div
+  *ngIf="data && data.length > 0; else elseBlock"
+  class="candlestick"
+  (window:resize)="onResize()">
   <google-chart #chart
                 [title]="title"
                 [type]="type"
                 [data]="data"
                 [options]="options"
                 [width]="width"
-                [height]="height"
-                (select)="onSelect($event)"
-                (mouseover)="onMouseOver($event)"
-                (mouseleave)="onMouseLeave($event)">
+                [height]="height">
   </google-chart>
 </div>
+<ng-template #elseBlock>
+  <div class="data-not-found"
+       (window:resize)="onResize()">
+    <p>DATA NOT FOUND</p>
+  </div>
+</ng-template>

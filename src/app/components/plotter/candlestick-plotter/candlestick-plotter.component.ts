@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {ChartMouseLeaveEvent, ChartMouseOverEvent, ChartSelectionChangedEvent, ChartType} from "angular-google-charts";
 import {CandlestickState} from "../../../store/candlestick/candlestick.state";
 import {select, Store} from "@ngrx/store";
@@ -19,16 +19,16 @@ export class CandlestickPlotterComponent implements OnInit {
   data = [
     ['09:05', 20, 28, 38, 45]
   ];
-  options = {
+  options: google.visualization.CandlestickChartOptions = {
     legend:'none',
     candlestick: {
       fallingColor: { strokeWidth: 2, stroke:'#a52714' }, // red
       risingColor: { strokeWidth: 2, stroke: '#0f9d58' }, // green
     },
-    hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
+    hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 16}}
   };
-  width = 2000;
-  height = 400;
+  width = 0;
+  height = 0;
 
 
   constructor(
@@ -41,24 +41,25 @@ export class CandlestickPlotterComponent implements OnInit {
     this.candlestick$.subscribe( (candlestickState) => {
         if(candlestickState && candlestickState.candlestick && candlestickState.candlestick.candles && candlestickState.candlestick.candles.length > 0) {
           this.title = candlestickState.candlestick.stockExchangeCode+':'+candlestickState.candlestick.tickerCode;
-          const date = '00:00:00';
           this.data = candlestickState.candlestick.candles.map(candle => {
             const regexArray = candle.end.match(/\d\d:\d\d:\d\d/);
             const date = regexArray?regexArray[0]:'0';
             return [date, candle.low, candle.open, candle.close, candle.high]
           })
+        } else {
+          this.data = [];
         }
       }
     );
+    this.resize();
   }
 
-  onSelect(event: ChartSelectionChangedEvent){
+  onResize(){
+   this.resize();
   }
 
-  onMouseOver(event: ChartMouseOverEvent){
+  resize(){
+    this.width = window.innerWidth*(5/6);
+    this.height =window.innerHeight*0.4;
   }
-
-  onMouseLeave(event: ChartMouseLeaveEvent){
-  }
-
 }

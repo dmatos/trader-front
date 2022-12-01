@@ -1,5 +1,5 @@
-.nav{
-  max-height: 99vh;
-  max-width: 200vh;
-  overflow: auto;
+.data-not-found{
+  color: red;
+  font-weight: bolder;
+  font-size: 40px;
 }
