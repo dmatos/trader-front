@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ResponseModel} from "../model/response.model";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
+import {CandlestickModel} from "../model/candlestick.model";
 
 @Injectable({providedIn: 'root'})
 export class CandlestickService {

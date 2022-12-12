@@ -1,7 +1,5 @@
 import {createAction, props} from "@ngrx/store";
 import {TickersState} from "./tickers-list.state";
-import {Ticker} from "../../model/ticker.model";
-import {CandlestickModel} from "../../model/candlestick.model";
 
 export const GET_ALL_TICKERS_TYPE: string = '[Ticker] Get tickers';
 export const GET_ALL_TICKERS_SUCCESS_TYPE: string = '[Ticker] Get tickers success';

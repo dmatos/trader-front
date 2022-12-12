@@ -2,10 +2,6 @@ import {createReducer, on} from "@ngrx/store";
 import * as TickersListActions from "./tickers-list.actions";
 import {TickersState} from "./tickers-list.state";
 import {Ticker} from "../../model/ticker.model";
-import {selectTickers} from "./tickers-list.selector";
-import {filter} from "rxjs";
-
-export const tickersFeatureKey = 'tickersState';
 
 export const initialState: TickersState = {tickers: [], selectedTicker: new Ticker('',0,'','')};
 

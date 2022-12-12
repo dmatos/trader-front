@@ -28,7 +28,8 @@
 
 .tickers-list{
   display: grid;
-  max-height: 90vh;
+  max-height: 85vh;
+  overflow-y: auto;
 }
 
 .no-bullets{

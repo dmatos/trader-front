@@ -1,19 +1,15 @@
 <div
-  *ngIf="data && data.length > 0; else elseBlock"
-  class="candlestick"
-  (window:resize)="onResize()">
+  *ngIf="data && data.length > 0; else elseBlock">
   <google-chart #chart
+                class="candlestick"
                 [title]="title"
                 [type]="type"
                 [data]="data"
-                [options]="options"
-                [width]="width"
-                [height]="height">
+                [options]="options">
   </google-chart>
 </div>
 <ng-template #elseBlock>
-  <div class="data-not-found"
-       (window:resize)="onResize()">
+  <div class="data-not-found">
     <p>DATA NOT FOUND</p>
   </div>
 </ng-template>

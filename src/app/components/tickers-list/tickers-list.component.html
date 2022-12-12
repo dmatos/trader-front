@@ -28,7 +28,7 @@
       [(ngModel)]="tickerCode"
       (input)="onSearchTicker()">
   </div>
-  <div class="overflow tickers-list">
+  <div class="tickers-list">
     <ul>
       <li class="no-bullets" *ngFor="let ticker of filteredTickers">
         <a

@@ -1,24 +1,26 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
-import { PlotterComponent } from './components/plotter/plotter.component';
-import { TickersListComponent } from './components/tickers-list/tickers-list.component';
-import { StoreModule } from "@ngrx/store";
-import {tickersReducer} from "./store/tickers/tickers-list.reducer";
-import { EffectsModule } from '@ngrx/effects';
+import {AppComponent} from './app.component';
+import {PlotterComponent} from './components/plotter/plotter.component';
+import {TickersListComponent} from './components/tickers-list/tickers-list.component';
+import {StoreModule} from "@ngrx/store";
+import {EffectsModule} from '@ngrx/effects';
 import {TickersListEffects} from "./store/tickers/tickers-list.effects";
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {GoogleChartsModule} from "angular-google-charts";
-import { CandlestickPlotterComponent } from './components/plotter/candlestick-plotter/candlestick-plotter.component';
+import {CandlestickPlotterComponent} from './components/plotter/candlestick-plotter/candlestick-plotter.component';
 import {PiechartPlotterComponent} from "./components/plotter/piechart-plotter/piechart-plotter.component";
-import { CombochartPlotterComponent } from './components/plotter/combochart-plotter/combochart-plotter.component';
+import {CombochartPlotterComponent} from './components/plotter/combochart-plotter/combochart-plotter.component';
 import {CandlestickEffects} from "./store/candlestick/candlestick.effects";
 import {FormsModule} from "@angular/forms";
-import {reducers} from "./store";
+import {reducers} from "./store/index";
+import {ChartComponent} from "./components/plotter/chart/chart.component";
+import {ChartDirective} from "./components/plotter/chart/chart.directive";
+import {ChartEffects} from "./store/chart/chart.effects";
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import {reducers} from "./store";
     TickersListComponent,
     CandlestickPlotterComponent,
     PiechartPlotterComponent,
-    CombochartPlotterComponent
+    CombochartPlotterComponent,
+    ChartComponent,
+    ChartDirective
   ],
   imports: [
     BrowserModule,
@@ -36,7 +40,7 @@ import {reducers} from "./store";
     FormsModule,
     CommonModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([TickersListEffects, CandlestickEffects]),
+    EffectsModule.forRoot([TickersListEffects, CandlestickEffects, ChartEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],

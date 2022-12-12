@@ -9,12 +9,11 @@ import {
   searchTickersByCodeSuccess,
   selectTicker,
 } from "./tickers-list.actions";
-import {catchError, concatMap, map, mergeMap} from "rxjs/operators";
+import {catchError, map, mergeMap, switchMap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {Action} from "@ngrx/store";
 import {Ticker} from "../../model/ticker.model";
-import {CandlestickService} from "../../service/candlestick.service";
-import {getCandlestickSuccess} from "../candlestick/candlestick.actions";
+import {getCandlestickAndEma} from "../chart/chart.actions";
 
 @Injectable()
 export class TickersListEffects {
@@ -34,7 +33,7 @@ export class TickersListEffects {
   searchTickersByCode$ = createEffect((): Observable<Action> =>
     this.actions$.pipe(
       ofType(searchTickersByCode),
-      concatMap(({code}) => this.tickersService.searchTickersByCode(code).pipe(
+      mergeMap(({code}) => this.tickersService.searchTickersByCode(code).pipe(
         map(tickers => searchTickersByCodeSuccess({tickers: tickers, selectedTicker: tickers.length>0?tickers[0]:new Ticker('',0,'','')})),
         catchError(error => of(getAllTickersFail({error: error})))
       ))
@@ -44,17 +43,13 @@ export class TickersListEffects {
   selectTicker$ = createEffect(() : Observable<Action> =>
     this.actions$.pipe(
       ofType(selectTicker),
-      concatMap( ({ tickerCode, stockExchangeCode, begin, end, duration}) =>
-        this.candlestickService.getCandlestickByTickerCodeAndDateRange(tickerCode, stockExchangeCode, begin, end, duration).pipe(
-          map( candlestick => getCandlestickSuccess({candlestick}))
-        ) )
+      map(({ tickerCode, stockExchangeCode, begin, end, duration}) => getCandlestickAndEma({tickerCode, stockExchangeCode, begin, end, duration}))
     )
   );
 
   constructor(
     private actions$: Actions,
-    private tickersService: TickersService,
-    private candlestickService: CandlestickService
+    private tickersService: TickersService
   ) {
   }
 }

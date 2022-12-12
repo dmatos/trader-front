@@ -25,11 +25,8 @@ export class CandlestickPlotterComponent implements OnInit {
       fallingColor: { strokeWidth: 2, stroke:'#a52714' }, // red
       risingColor: { strokeWidth: 2, stroke: '#0f9d58' }, // green
     },
-    hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 16}}
+    hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
   };
-  width = 0;
-  height = 0;
-
 
   constructor(
     private store: Store<CandlestickState>
@@ -51,15 +48,5 @@ export class CandlestickPlotterComponent implements OnInit {
         }
       }
     );
-    this.resize();
-  }
-
-  onResize(){
-   this.resize();
-  }
-
-  resize(){
-    this.width = window.innerWidth*(5/6);
-    this.height =window.innerHeight*0.4;
   }
 }

@@ -12,8 +12,3 @@
 app-root{
   display: grid;
 }
-
-.overflow{
-  display: grid;
-  overflow: auto;
-}
