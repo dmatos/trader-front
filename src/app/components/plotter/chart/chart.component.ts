@@ -18,11 +18,11 @@ export class ChartComponent implements OnInit, OnDestroy {
     if (this.chartModel !== null && this.chartState$ !== undefined) {
       this.chartState$ = this.chartModel.getObservable();
       this.chartState$.subscribe((chartState) => {
-        if(!this.chartModel){
+        if(!this.chartModel || !chartState){
           return;
         }
-        this.chartModel.dataModel = chartState?.dataModel;
-        this.chartModel.dataModel = chartState?.dataModel;
+        this.chartModel.dataModel = chartState.dataModel;
+        this.chartModel.title = chartState.title;
         this.data = this.chartModel.getDataAsArrayOfArrays();
       });
     } else {

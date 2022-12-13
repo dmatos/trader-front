@@ -8,8 +8,9 @@ import {
   searchTickersByCode,
   searchTickersByCodeSuccess,
   selectTicker,
+  selectTickerFail,
 } from "./tickers-list.actions";
-import {catchError, map, mergeMap, switchMap} from "rxjs/operators";
+import {catchError, map, mergeMap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {Action} from "@ngrx/store";
 import {Ticker} from "../../model/ticker.model";
@@ -43,7 +44,8 @@ export class TickersListEffects {
   selectTicker$ = createEffect(() : Observable<Action> =>
     this.actions$.pipe(
       ofType(selectTicker),
-      map(({ tickerCode, stockExchangeCode, begin, end, duration}) => getCandlestickAndEma({tickerCode, stockExchangeCode, begin, end, duration}))
+      map(({ tickerCode, stockExchangeCode, begin, end, duration}) => getCandlestickAndEma({tickerCode, stockExchangeCode, begin, end, duration})),
+      catchError( error => of(selectTickerFail({error: error})))
     )
   );
 

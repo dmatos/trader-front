@@ -23,5 +23,7 @@ export const getCandlestickAndEmaSuccess = createAction(
 
 export const getCandlestickAndEmaFail = createAction(
   GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_FAIL_TYPE,
-  props<{error: any}>()
+  props<{
+    error: Error
+  }>()
 );

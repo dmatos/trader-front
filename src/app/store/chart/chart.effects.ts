@@ -50,15 +50,11 @@ export class ChartEffects{
           let dataModel = new ChartDataModel(data,timestamps);
           return {
             title: stockExchangeCode+':'+tickerCode,
-            dataModel: dataModel,
-            tickerCode: tickerCode,
-            stockExchangeCode: stockExchangeCode,
-            begin: begin,
-            end: end,
-            duration: duration};
+            dataModel: dataModel
+          };
         }),
       ).pipe(
-        map( ({ title, dataModel, tickerCode, stockExchangeCode, begin, end: end, duration: duration}) => {
+        map( ({ title, dataModel}) => {
             return {
               title: title,
               chartDataModel: dataModel,
