@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {map} from "rxjs/operators";
 import {ResponseModel} from "../model/response.model";
 import {MacdResponseModel} from "../model/macd.model";
+import {of} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class MacdService{
@@ -17,6 +18,12 @@ export class MacdService{
     durationInMinutes2: number,
     signalDuration: number,
   ){
+    if(!tickerCode || !stockExchangeCode){
+      return of(Error('Either tickerCode or stockExchange is not defined.'));
+    }
+    if(!durationInMinutes1 || !durationInMinutes2 || !signalDuration){
+      return of(Error('Either durations or signal is not defined'));
+    }
     return this.httpClient.post<ResponseModel>(environment.apiUrl+`/macd/${stockExchangeCode}/${durationInMinutes1}/${durationInMinutes2}/${signalDuration}`,
       {
         "tickerCode": tickerCode,

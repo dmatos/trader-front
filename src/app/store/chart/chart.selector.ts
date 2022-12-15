@@ -1,29 +1,42 @@
 import {createFeatureSelector, createSelector} from "@ngrx/store";
-import {ChartsMapState, ChartState} from "./chart.state";
+import {ChartState} from "./chart.state";
 
 //keys must be exported in the const /app/store/index.ts/reducers
 export const selectCandlestickWithEmaFeatureKey = 'selectCandlestickWithEmaFeature';
+export const selectMacdAndSignalFeatureKey = 'selectMacdAndSignalFeature'
 
 export const selectCandlestickWithEmaFeatureSelector = createFeatureSelector<ChartState>(
   selectCandlestickWithEmaFeatureKey
 );
 
-const stateMap: ChartsMapState = {charts: new Map<String, ChartState>()};
+export const selectMacdAndSignalFeatureSelector = createFeatureSelector<ChartState>(
+  selectMacdAndSignalFeatureKey
+);
+
+function getStateOrElseNewChartState(state: ChartState){
+  if(!state){
+    return {
+      title: '',
+      dataModel: {
+        data: [],
+        timestamps:[]
+      }
+    };
+  } else {
+    return state
+  }
+}
 
 export const selectCandlestickWithEma = createSelector(
   selectCandlestickWithEmaFeatureSelector,
   (state: ChartState) => {
-    if(!state){
-        stateMap.charts.set(selectCandlestickWithEmaFeatureKey, {
-          title: '',
-          dataModel: {
-            data: [],
-            timestamps:[]
-          }
-        });
-    } else {
-      stateMap.charts.set(selectCandlestickWithEmaFeatureKey, state);
-    }
-    return stateMap.charts.get(selectCandlestickWithEmaFeatureKey);
+    return getStateOrElseNewChartState(state);
+  }
+);
+
+export const selectMacdWithSignal = createSelector(
+  selectMacdAndSignalFeatureSelector,
+  (state: ChartState) => {
+    getStateOrElseNewChartState(state);
   }
 );

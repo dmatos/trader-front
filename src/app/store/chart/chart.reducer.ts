@@ -15,5 +15,12 @@ export const chartReducer = createReducer(
       ...action
     }
   }),
-  on(ChartActions.getCandlestickAndEmaFail, state => state)
+  on(ChartActions.getCandlestickAndEmaFail, state => state),
+  on(ChartActions.getMacdAndSignalSuccess, (state, action) => {
+    return {
+      ...state,
+      ...action
+    }
+  }),
+  on(ChartActions.getMacdAndSignalFail, state => state),
 );

@@ -41,11 +41,9 @@ export class TickersListComponent implements OnInit {
     this.readQueryParams(this.route.snapshot.queryParams);
     this.route.params.subscribe((params) => {
       this.readParams(params);
-      this.dispatchSelectTickerAction();
     });
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
-      this.dispatchSelectTickerAction();
     });
   }
 

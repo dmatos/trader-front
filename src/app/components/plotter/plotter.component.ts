@@ -38,11 +38,9 @@ export class PlotterComponent implements OnInit{
     this.readQueryParams(this.route.snapshot.queryParams);
     this.route.params.subscribe((params) =>{
       this.readParams(params);
-      this.dispatchSelectTickerAction();
     });
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
-      this.dispatchSelectTickerAction();
     });
     this.dispatchSelectTickerAction();
   }
@@ -74,12 +72,13 @@ export class PlotterComponent implements OnInit{
       null,
       {
         seriesType: 'candlesticks',
-        series: {1 : {type: 'line'}},
+        series: {1 : {type: 'line', color: 'blue'}},
         legend:'none',
         candlestick: {
-          fallingColor: { strokeWidth: 1, stroke:'#000' },
-          risingColor: { strokeWidth: 1, stroke: '#fff' },
+          fallingColor: { strokeWidth: 1, stroke:'#000', fill:'#000' },
+          risingColor: { strokeWidth: 1, stroke: '#000', fill:'#fff' }
         },
+        colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
       selectCandlestickWithEma,

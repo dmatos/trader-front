@@ -9,7 +9,7 @@ export class ChartModel{
     public type: ChartType,
     public dataModel: ChartDataModel | null | undefined,
     public options: {},
-    private selector:  MemoizedSelector<object, ChartState | undefined, DefaultProjectorFn<ChartState | undefined>>,
+    private selector:  MemoizedSelector<object, ChartState, DefaultProjectorFn<ChartState | undefined>>,
     private store: Store<ChartState>
   ) {
   }

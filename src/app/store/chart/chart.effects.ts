@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {CandlestickService} from "../../service/candlestick.service";
-import {filter, mergeAll, Observable, of, throwError} from "rxjs";
+import {filter, mergeAll, Observable, of, switchAll, switchMap, take, takeLast, throwError} from "rxjs";
 import {Action} from "@ngrx/store";
 import {
   getCandlestickAndEma,
@@ -30,7 +30,7 @@ export class ChartEffects{
   getCandlestickAndEma$ = createEffect( () : Observable<Action> =>
     this.actions$.pipe(
       ofType(getCandlestickAndEma),
-      mergeMap( (action:{tickerCode: string; stockExchangeCode: string; begin: string; end: string; duration: number}) => {
+      switchMap( (action:{tickerCode: string; stockExchangeCode: string; begin: string; end: string; duration: number}) => {
         return this.getCandlestickAndEmaAux$(action.tickerCode, action.stockExchangeCode, action.begin, action.end, action.duration)
           .pipe(
             map((chartState) => {
@@ -93,8 +93,31 @@ export class ChartEffects{
             })
           )
         }),
-        mergeAll()
+        switchAll()
       )
   }
+
+  // TODO subscribe to this effect on the new chart that will go in the array of charts in the plotter component
+  getMacdAndSignal$ = createEffect( (): Observable<Action> =>
+    this.actions$.pipe(
+      ofType(getMacdAndSignal),
+      mergeMap((action) => {
+        return this.macdService.getMacdByTickerCodeAndDateRange(
+          action.tickerCode, action.stockExchangeCode,action.begin,
+          action.end, action.duration1, action.duration2, action.signalDuration)
+          .pipe(
+            map((response) => {
+              if(response instanceof Error){
+                throwError(() => response);
+              }
+              return getMacdAndSignalSuccess(response as MacdResponseModel);
+            })
+          )
+      }),
+      catchError(
+        error => of(getMacdAndSignalFail({error: error}))
+      )
+    )
+  );
 
 }

@@ -23,7 +23,7 @@ export class EmaService {
         "end": end,
         "size": durationInMinutes
       })
-      .pipe(map((response) =>{
+      .pipe(map( response =>{
           if(response && response.data)
             return response.data as MovingAveragesResponseModel;
           else

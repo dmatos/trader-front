@@ -12,10 +12,6 @@ import {environment} from '../environments/environment';
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
 import {GoogleChartsModule} from "angular-google-charts";
-import {CandlestickPlotterComponent} from './components/plotter/candlestick-plotter/candlestick-plotter.component';
-import {PiechartPlotterComponent} from "./components/plotter/piechart-plotter/piechart-plotter.component";
-import {CombochartPlotterComponent} from './components/plotter/combochart-plotter/combochart-plotter.component';
-import {CandlestickEffects} from "./store/candlestick/candlestick.effects";
 import {FormsModule} from "@angular/forms";
 import {reducers} from "./store/index";
 import {ChartComponent} from "./components/plotter/chart/chart.component";
@@ -29,9 +25,6 @@ import {appRoutes} from "./store/app-routes.routes";
     AppComponent,
     PlotterComponent,
     TickersListComponent,
-    CandlestickPlotterComponent,
-    PiechartPlotterComponent,
-    CombochartPlotterComponent,
     ChartComponent,
     ChartDirective
   ],
@@ -43,7 +36,7 @@ import {appRoutes} from "./store/app-routes.routes";
     CommonModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([TickersListEffects, CandlestickEffects, ChartEffects]),
+    EffectsModule.forRoot([TickersListEffects, ChartEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
