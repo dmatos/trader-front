@@ -21,6 +21,8 @@ import {reducers} from "./store/index";
 import {ChartComponent} from "./components/plotter/chart/chart.component";
 import {ChartDirective} from "./components/plotter/chart/chart.directive";
 import {ChartEffects} from "./store/chart/chart.effects";
+import {RouterModule} from "@angular/router";
+import {appRoutes} from "./store/app-routes.routes";
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import {ChartEffects} from "./store/chart/chart.effects";
     GoogleChartsModule,
     FormsModule,
     CommonModule,
+    RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, CandlestickEffects, ChartEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })

@@ -3,16 +3,29 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {CandlestickService} from "../../service/candlestick.service";
 import {filter, mergeAll, Observable, of, throwError} from "rxjs";
 import {Action} from "@ngrx/store";
-import {getCandlestickAndEma, getCandlestickAndEmaFail, getCandlestickAndEmaSuccess} from "./chart.actions";
+import {
+  getCandlestickAndEma,
+  getCandlestickAndEmaFail,
+  getCandlestickAndEmaSuccess,
+  getMacdAndSignal, getMacdAndSignalFail, getMacdAndSignalSuccess
+} from "./chart.actions";
 import {catchError, map, mergeMap} from "rxjs/operators";
 import {EmaService} from "../../service/ema.service";
 import {CandlestickModel} from "../../model/candlestick.model";
 import {ChartDataModel} from "../../model/chart-data.model";
 import {CandleModel} from "../../model/candle.model";
 import {ChartState} from "./chart.state";
+import {MacdService} from "../../service/macd.service";
+import {MacdResponseModel} from "../../model/macd.model";
 
 @Injectable()
 export class ChartEffects{
+  constructor(
+    private actions$: Actions,
+    private candlestickService: CandlestickService,
+    private emaService: EmaService,
+    private macdService: MacdService
+  ) {}
 
   getCandlestickAndEma$ = createEffect( () : Observable<Action> =>
     this.actions$.pipe(
@@ -84,10 +97,4 @@ export class ChartEffects{
       )
   }
 
-  constructor(
-    private actions$: Actions,
-    private candlestickService: CandlestickService,
-    private emaService: EmaService
-  ) {
-  }
 }

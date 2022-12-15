@@ -1,7 +1,8 @@
 import {createFeatureSelector, createSelector} from "@ngrx/store";
 import {ChartsMapState, ChartState} from "./chart.state";
 
-export const selectCandlestickWithEmaFeatureKey = 'selectCandlestickWithEmaFeature'; //this string must be exported in the const store/index.ts/reducers
+//keys must be exported in the const /app/store/index.ts/reducers
+export const selectCandlestickWithEmaFeatureKey = 'selectCandlestickWithEmaFeature';
 
 export const selectCandlestickWithEmaFeatureSelector = createFeatureSelector<ChartState>(
   selectCandlestickWithEmaFeatureKey

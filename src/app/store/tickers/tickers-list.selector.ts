@@ -9,5 +9,5 @@ export const selectTickersFeatureSelector = createFeatureSelector<TickersState>(
 
 export const selectTickers = createSelector(
   selectTickersFeatureSelector,
-  (state: TickersState) => state.tickers
+  (state: TickersState) => state
 );

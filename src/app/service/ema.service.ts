@@ -7,10 +7,15 @@ import {MovingAveragesResponseModel} from "../model/moving-average.model";
 
 @Injectable({providedIn: 'root'})
 export class EmaService {
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
-  getExponentialMovingAverageByTickerCodeAndDateRange(tickerCode: string, stockExchangeCode: string, begin: string, end: string, durationInMinutes: number) {
+  getExponentialMovingAverageByTickerCodeAndDateRange(
+    tickerCode: string,
+    stockExchangeCode: string,
+    begin: string,
+    end: string,
+    durationInMinutes: number
+  ) {
     return this.httpClient.post<ResponseModel>(environment.apiUrl + '/intraday/metadata/ma/ema/' + stockExchangeCode,
       {
         "tickerCode": tickerCode,

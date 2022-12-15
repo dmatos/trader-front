@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {ResponseModel} from "../model/response.model";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
-import {CandlestickModel} from "../model/candlestick.model";
+import {of} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class CandlestickService {
@@ -19,14 +19,17 @@ export class CandlestickService {
    * @param durationInMinutes number of ticks in the candle in minutes
    */
   getCandlestickByTickerCodeAndDateRange(tickerCode: string, stockExchangeCode: string, begin: string, end: string, durationInMinutes: number){
-    return this.httpClient.post<ResponseModel>(environment.apiUrl+'/intraday/metadata/candlestick/'+stockExchangeCode,
-      {
-        "tickerCode": tickerCode,
-        "begin": begin,
-        "end": end,
-        "chronoUnit": "MINUTES",
-        "duration": durationInMinutes
-      })
-      .pipe(map( (response) => response.data));
+    if(!!stockExchangeCode) {
+      return this.httpClient.post<ResponseModel>(environment.apiUrl + '/intraday/metadata/candlestick/' + stockExchangeCode,
+        {
+          "tickerCode": tickerCode,
+          "begin": begin,
+          "end": end,
+          "chronoUnit": "MINUTES",
+          "duration": durationInMinutes
+        })
+        .pipe(map((response) => response.data));
+    }
+    return of(null);
   }
 }

@@ -24,6 +24,7 @@ export const tickersReducer = createReducer(
   on(TickersListActions.selectTicker, (state: TickersState, {tickerCode, stockExchangeCode}) =>
     ({
       ...state,
+      tickers: state.tickers,
       selectedTicker: filterSelectedTicker(state.tickers, tickerCode, stockExchangeCode)
     })
   )

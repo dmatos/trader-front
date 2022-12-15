@@ -14,5 +14,6 @@ export const chartReducer = createReducer(
       ...state,
       ...action
     }
-  })
+  }),
+  on(ChartActions.getCandlestickAndEmaFail, state => state)
 );

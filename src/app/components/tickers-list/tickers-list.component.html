@@ -32,7 +32,7 @@
     <ul>
       <li class="no-bullets" *ngFor="let ticker of filteredTickers">
         <a
-          (click)="onSelectTicker(ticker)"
+          (click)="onSelectTicker(ticker.code, ticker.stockExchangeCode)"
         >
           {{ticker.code}}:{{ticker.stockExchangeCode}}
         </a>
