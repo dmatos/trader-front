@@ -90,9 +90,9 @@ export class PlotterComponent implements OnInit, AfterViewInit{
       stockExchangeCode: this.stockExchangeCode,
       begin: this.begin,
       end: this.end,
-      duration1: 1,
-      duration2: 1,
-      signalDuration: 1,
+      duration1: 2,
+      duration2: 7,
+      signalDuration: 21,
     }))
   }
 
