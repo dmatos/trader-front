@@ -1,22 +1,24 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {CandlestickService} from "../../service/candlestick.service";
-import {filter, mergeAll, Observable, of, switchAll, switchMap, take, takeLast, throwError} from "rxjs";
+import {filter, Observable, of, switchAll, switchMap, throwError} from "rxjs";
 import {Action} from "@ngrx/store";
 import {
+  GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
   getCandlestickAndEma,
   getCandlestickAndEmaFail,
   getCandlestickAndEmaSuccess,
-  getMacdAndSignal, getMacdAndSignalFail, getMacdAndSignalSuccess
+  getMacdAndSignal,
+  getMacdAndSignalFail,
+  getMacdAndSignalSuccess
 } from "./chart.actions";
-import {catchError, map, mergeMap} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
 import {EmaService} from "../../service/ema.service";
 import {CandlestickModel} from "../../model/candlestick.model";
 import {ChartDataModel} from "../../model/chart-data.model";
 import {CandleModel} from "../../model/candle.model";
 import {ChartState} from "./chart.state";
 import {MacdService} from "../../service/macd.service";
-import {MacdResponseModel} from "../../model/macd.model";
 
 @Injectable()
 export class ChartEffects{
@@ -88,7 +90,7 @@ export class ChartEffects{
                     chartDataModel.data[i].push(movingAverage[0].value);
                   }
                 })
-                return {title: title, dataModel: chartDataModel}
+                return {title: title, dataModel: chartDataModel, type: GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE}
               }
             })
           )
@@ -97,25 +99,35 @@ export class ChartEffects{
       )
   }
 
-  // TODO subscribe to this effect on the new chart that will go in the array of charts in the plotter component
   getMacdAndSignal$ = createEffect( (): Observable<Action> =>
     this.actions$.pipe(
       ofType(getMacdAndSignal),
-      mergeMap((action) => {
+      switchMap((action) => {
         return this.macdService.getMacdByTickerCodeAndDateRange(
           action.tickerCode, action.stockExchangeCode,action.begin,
           action.end, action.duration1, action.duration2, action.signalDuration)
           .pipe(
             map((response) => {
               if(response instanceof Error){
-                throwError(() => response);
+                return getMacdAndSignalFail({error: response});
               }
-              return getMacdAndSignalSuccess(response as MacdResponseModel);
+              const data: number[][] = [];
+              const timestamps: string[] = [];
+              response.macd.forEach((ma,index) => {
+                const regexArray = ma.timestamp.match(/\d\d:\d\d:\d\d/);
+                let timestamp =  regexArray?regexArray[0]:'0';
+                timestamps.push(timestamp);
+                data.push([ma.value, response.signal[index].value]);
+              });
+              const dataModel = new ChartDataModel(data,timestamps);
+              return getMacdAndSignalSuccess({title:action.stockExchangeCode+':'+action.tickerCode, dataModel: dataModel});
             })
           )
       }),
       catchError(
-        error => of(getMacdAndSignalFail({error: error}))
+        error => {
+          return of(getMacdAndSignalFail({error: error}));
+        }
       )
     )
   );

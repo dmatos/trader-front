@@ -2,25 +2,20 @@ import {ChartState} from "./chart.state";
 import {createReducer, on} from "@ngrx/store";
 import * as ChartActions from "./chart.actions";
 
-export const initialState : ChartState = {title: 'null', dataModel: {data: [], timestamps: []}};
+const initialState = new Map<string, ChartState|undefined>();
+
+
 
 export const chartReducer = createReducer(
   initialState,
   on(ChartActions.getCandlestickAndEmaSuccess, (state, action) => {
-    if(!action.dataModel) {
-      return {...state}
-    }
-    return {
-      ...state,
-      ...action
-    }
+    state.set(action['type'], action);
+    return state;
   }),
   on(ChartActions.getCandlestickAndEmaFail, state => state),
   on(ChartActions.getMacdAndSignalSuccess, (state, action) => {
-    return {
-      ...state,
-      ...action
-    }
+    state.set(action['type'], action);
+    return state;
   }),
-  on(ChartActions.getMacdAndSignalFail, state => state),
+  on(ChartActions.getMacdAndSignalFail, state => state)
 );

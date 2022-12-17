@@ -14,7 +14,7 @@ import {catchError, map, mergeMap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {Action} from "@ngrx/store";
 import {Ticker} from "../../model/ticker.model";
-import {getCandlestickAndEma} from "../chart/chart.actions";
+import {getCandlestickAndEma, getMacdAndSignal} from "../chart/chart.actions";
 
 @Injectable()
 export class TickersListEffects {

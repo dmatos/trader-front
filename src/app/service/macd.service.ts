@@ -24,7 +24,7 @@ export class MacdService{
     if(!durationInMinutes1 || !durationInMinutes2 || !signalDuration){
       return of(Error('Either durations or signal is not defined'));
     }
-    return this.httpClient.post<ResponseModel>(environment.apiUrl+`/macd/${stockExchangeCode}/${durationInMinutes1}/${durationInMinutes2}/${signalDuration}`,
+    return this.httpClient.post<ResponseModel>(environment.apiUrl+`/intraday/metadata/ma/macd/${stockExchangeCode}/${durationInMinutes1}/${durationInMinutes2}/${signalDuration}`,
       {
         "tickerCode": tickerCode,
         "begin": begin,

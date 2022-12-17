@@ -1,13 +1,12 @@
 import {createAction, props} from "@ngrx/store";
 import {ChartState} from "./chart.state";
-import {MacdResponseModel} from "../../model/macd.model";
 
 export const GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_TYPE: string = "[Chart] Get combochart candlestick+ema by ticker code and date range";
 export const GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE: string = "[Chart] Get combochart candlestick+ema by ticker code and date range success";
 export const GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_FAIL_TYPE: string = "[Chart] Get combochart candlestick+ema by ticker code and date range fail";
-export const GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_TYPE: string = "[Chart] Get combochart candlestick+ema by ticker code and date range";
-export const GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE: string = "[Chart] Get combochart candlestick+ema by ticker code and date rangen success";
-export const GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_FAIL_TYPE: string = "[Chart] Get combochart candlestick+ema by ticker code and date range fail";
+export const GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_TYPE: string = "[Chart] Get combochart MACD+signal by ticker code and date range";
+export const GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE: string = "[Chart] Get combochart MACD+signal by ticker code and date range success";
+export const GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_FAIL_TYPE: string = "[Chart] Get combochart MACD+signal by ticker code and date range fail";
 
 export const getCandlestickAndEma = createAction(
   GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_TYPE,
@@ -47,7 +46,7 @@ export const getMacdAndSignal = createAction(
 
 export const getMacdAndSignalSuccess = createAction(
   GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
-  props<MacdResponseModel>()
+  props<ChartState>()
 );
 
 export const getMacdAndSignalFail = createAction(

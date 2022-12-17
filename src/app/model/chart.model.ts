@@ -2,19 +2,21 @@ import {ChartType} from "angular-google-charts";
 import {DefaultProjectorFn, MemoizedSelector, select, Store} from "@ngrx/store";
 import {ChartDataModel} from "./chart-data.model";
 import {ChartState} from "../store/chart/chart.state";
+import {selectChart} from "../store/chart/chart.selector";
 
 export class ChartModel{
+  private selector = selectChart;
   constructor(
     public title: string,
-    public type: ChartType,
+    public chartKey: string,
+    public chartType: ChartType,
     public dataModel: ChartDataModel | null | undefined,
     public options: {},
-    private selector:  MemoizedSelector<object, ChartState, DefaultProjectorFn<ChartState | undefined>>,
-    private store: Store<ChartState>
+    private store: Store<Map<string, ChartState|undefined>>
   ) {
   }
 
-  getObservable(){
+  getObservable$(){
     return this.store.pipe(select(this.selector));
   }
 

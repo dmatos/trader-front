@@ -1,22 +1,31 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewContainerRef} from '@angular/core';
 import {ChartModel} from "../../model/chart.model";
 import {ChartType} from "angular-google-charts";
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {ChartState} from "../../store/chart/chart.state";
-import {selectCandlestickWithEma} from "../../store/chart/chart.selector";
+import {selectChart} from "../../store/chart/chart.selector";
 import {ChartDirective} from "./chart/chart.directive";
 import {ChartComponent} from "./chart/chart.component";
 import {ActivatedRoute, Params} from "@angular/router";
 import {selectTicker} from "../../store/tickers/tickers-list.actions";
-import {TickersState} from "../../store/tickers/tickers-list.state";
+import {
+  GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
+  GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
+  getMacdAndSignal
+} from "../../store/chart/chart.actions";
 
 @Component({
   selector: 'app-plotter',
   templateUrl: './plotter.component.html',
   styleUrls: ['./plotter.component.css']
 })
-export class PlotterComponent implements OnInit{
-  @ViewChild(ChartDirective, {static: true}) chart!: ChartDirective;
+export class PlotterComponent implements OnInit, AfterViewInit{
+  @ViewChildren('customChart', {read: ViewContainerRef})
+  charts!: QueryList<ChartDirective>;
+  public chartModels:ChartModel[] = [
+    this.getComboCandlestickAndEma(),
+    this.getMacdAndSignal()
+  ];
   private tickerCode: string = '';
   private stockExchangeCode: string = '';
   private begin: string = '';
@@ -25,15 +34,11 @@ export class PlotterComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<ChartState>
+    private store: Store<Map<string, ChartState>>
   ) {
   }
 
   ngOnInit(): void {
-    const viewContainerRef = this.chart.viewContainerRef;
-    viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent<ChartComponent>(ChartComponent);
-    componentRef.instance.chartModel = this.getComboCandlestickAndEma();
     this.readParams(this.route.snapshot.params);
     this.readQueryParams(this.route.snapshot.queryParams);
     this.route.params.subscribe((params) =>{
@@ -45,15 +50,32 @@ export class PlotterComponent implements OnInit{
     this.dispatchSelectTickerAction();
   }
 
+  setCharts(){
+    setTimeout(()=>{
+      this.charts.forEach((chart, index) => {
+        const viewContainerRef = (chart as unknown) as ViewContainerRef;
+        viewContainerRef.clear();
+        const componentRef = viewContainerRef.createComponent<ChartComponent>(ChartComponent);
+        componentRef.instance.chartModel =  this.chartModels[index];
+      });
+    }, 50);
+  }
+
+  ngAfterViewInit(){
+    this.setCharts();
+  }
+
   readParams(params: Params){
     this.tickerCode = params['tickerCode'];
     this.stockExchangeCode = params['stockExchangeCode'];
+    this.setCharts();
   }
 
   readQueryParams(params: Params){
     this.begin = params['begin'];
     this.end = params['end'];
     this.duration = params['duration'];
+    this.setCharts();
   }
 
   dispatchSelectTickerAction(){
@@ -63,11 +85,21 @@ export class PlotterComponent implements OnInit{
       begin: this.begin,
       end: this.end,
       duration: this.duration}));
+    this.store.dispatch(getMacdAndSignal({
+      tickerCode: this.tickerCode,
+      stockExchangeCode: this.stockExchangeCode,
+      begin: this.begin,
+      end: this.end,
+      duration1: 1,
+      duration2: 1,
+      signalDuration: 1,
+    }))
   }
 
   getComboCandlestickAndEma(){
     return new ChartModel(
       'ComboCandlestickAndEma',
+      GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
       ChartType.ComboChart,
       null,
       {
@@ -81,8 +113,22 @@ export class PlotterComponent implements OnInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      selectCandlestickWithEma,
       this.store);
   }
 
+  getMacdAndSignal(){
+    return new ChartModel(
+      'ComboMacdAndLine',
+      GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
+      ChartType.ComboChart,
+      null,
+      {
+        seriesType: 'line',
+        series: {1 : {type: 'line', color: 'blue'}},
+        legend:'none',
+        colors:['#000'],
+        hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
+      },
+      this.store);
+  }
 }

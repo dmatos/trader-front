@@ -6,6 +6,7 @@ import {getAllTickers, selectTicker} from "../../store/tickers/tickers-list.acti
 import {selectTickers} from "../../store/tickers/tickers-list.selector";
 import {TickersState} from "../../store/tickers/tickers-list.state";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import {getMacdAndSignal} from "../../store/chart/chart.actions";
 
 @Component({
   selector: 'app-tickers-list',
@@ -92,12 +93,23 @@ export class TickersListComponent implements OnInit {
   }
 
   dispatchSelectTickerAction(){
+    const begin: string = this.getBeginString();
+    const end: string = this.getEndString();
     this.store.dispatch(selectTicker({
       tickerCode: this.tickerCode,
       stockExchangeCode: this.stockExchangeCode,
-      begin: this.getBeginString(),
-      end: this.getEndString(),
+      begin: begin,
+      end: end,
       duration: this.duration}));
+    this.store.dispatch(getMacdAndSignal({
+      tickerCode: this.tickerCode,
+      stockExchangeCode: this.stockExchangeCode,
+      begin: begin,
+      end: end,
+      duration1: 2,
+      duration2: 7,
+      signalDuration: 21,
+    }))
     const path = `${this.stockExchangeCode}/${this.tickerCode}`;
     this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), duration: this.duration}});
   }

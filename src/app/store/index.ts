@@ -6,10 +6,10 @@ import {chartReducer} from "./chart/chart.reducer";
 
 interface AppState {
   tickersState: TickersState;
-  selectCandlestickWithEmaFeature: ChartState;
+  chartState: Map<string,ChartState|undefined>;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   tickersState: tickersReducer,
-  selectCandlestickWithEmaFeature: chartReducer
+  chartState: chartReducer
 };

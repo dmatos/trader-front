@@ -1,4 +1,6 @@
 <div class="plotter">
-  <ng-template customChart> </ng-template>
+  <div *ngFor="let chartModel of chartModels">
+    <ng-template #customChart> </ng-template>
+  </div>
 </div>
 
