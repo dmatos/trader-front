@@ -1,7 +1,7 @@
 <div *ngIf="chartModel; else noChart">
   <google-chart #chart
                 class="customChart"
-                [title]="chartModel.title"
+                [title]=""
                 [type]="chartModel.chartType"
                 [data]="data"
                 [options]="chartModel.options">
