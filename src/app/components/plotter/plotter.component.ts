@@ -1,9 +1,8 @@
 import {AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewContainerRef} from '@angular/core';
 import {ChartModel} from "../../model/chart.model";
 import {ChartType} from "angular-google-charts";
-import {select, Store} from "@ngrx/store";
+import {Store} from "@ngrx/store";
 import {ChartState} from "../../store/chart/chart.state";
-import {selectChart} from "../../store/chart/chart.selector";
 import {ChartDirective} from "./chart/chart.directive";
 import {ChartComponent} from "./chart/chart.component";
 import {ActivatedRoute, Params} from "@angular/router";

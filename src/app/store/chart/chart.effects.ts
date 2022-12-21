@@ -68,6 +68,7 @@ export class ChartEffects{
             dataModel: dataModel
           };
         }),
+        catchError(error => throwError(() => error))
       ).pipe(
         map( ({ title, dataModel}) => {
             return {
@@ -88,6 +89,9 @@ export class ChartEffects{
                   const movingAverage = movingAverageResponseModel.movingAverages.filter((ma: any) => ma.timestamp.match(ts));
                   if (!!movingAverage && movingAverage.length > 0) {
                     chartDataModel.data[i].push(movingAverage[0].value);
+                  } else {
+                    const value = chartDataModel.data[i][3];
+                    chartDataModel.data[i].push(value);
                   }
                 })
                 return {title: title, dataModel: chartDataModel, type: GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE}

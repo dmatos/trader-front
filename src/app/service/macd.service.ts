@@ -32,10 +32,9 @@ export class MacdService{
         "size": 0
       }
     ).pipe(map((response) =>{
-        if(response && response.data)
+        if(!!response && response.status === 'OK' && response.data)
           return response.data as MacdResponseModel;
-        else
-          return new Error(response.data);
+        return new Error(response.data);
       }
     ));
   }

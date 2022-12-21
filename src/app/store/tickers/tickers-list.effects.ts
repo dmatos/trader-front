@@ -14,7 +14,7 @@ import {catchError, map, mergeMap} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {Action} from "@ngrx/store";
 import {Ticker} from "../../model/ticker.model";
-import {getCandlestickAndEma, getMacdAndSignal} from "../chart/chart.actions";
+import {getCandlestickAndEma, getCandlestickAndEmaFail, getMacdAndSignal} from "../chart/chart.actions";
 
 @Injectable()
 export class TickersListEffects {
@@ -45,6 +45,14 @@ export class TickersListEffects {
     this.actions$.pipe(
       ofType(selectTicker),
       map(({ tickerCode, stockExchangeCode, begin, end, duration}) => getCandlestickAndEma({tickerCode, stockExchangeCode, begin, end, duration})),
+      catchError( error => of(selectTickerFail({error: error})))
+    )
+  );
+
+  selectTickerFail$ = createEffect(() : Observable<Action> =>
+    this.actions$.pipe(
+      ofType(selectTickerFail),
+      map(({ error }) => getCandlestickAndEmaFail({error})),
       catchError( error => of(selectTickerFail({error: error})))
     )
   );

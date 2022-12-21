@@ -1,5 +1,5 @@
 import {ChartType} from "angular-google-charts";
-import {DefaultProjectorFn, MemoizedSelector, select, Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {ChartDataModel} from "./chart-data.model";
 import {ChartState} from "../store/chart/chart.state";
 import {selectChart} from "../store/chart/chart.selector";

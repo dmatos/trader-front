@@ -4,6 +4,8 @@ import {ResponseModel} from "../model/response.model";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {of} from "rxjs";
+import {CandlestickModel} from "../model/candlestick.model";
+import {ChartState} from "../store/chart/chart.state";
 
 @Injectable({providedIn: 'root'})
 export class CandlestickService {
@@ -28,7 +30,11 @@ export class CandlestickService {
           "chronoUnit": "MINUTES",
           "duration": durationInMinutes
         })
-        .pipe(map((response) => response.data));
+        .pipe(map((response) => {
+          if( !!response && response.status === 'OK' && response.data)
+            return response.data;
+          return new Error(response.data);
+        }));
     }
     return of(null);
   }
