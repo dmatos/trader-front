@@ -13,3 +13,6 @@ app-root{
   background-color: white;
   filter: invert();
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

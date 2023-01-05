@@ -19,6 +19,7 @@ import {ChartDirective} from "./components/plotter/chart/chart.directive";
 import {ChartEffects} from "./store/chart/chart.effects";
 import {RouterModule} from "@angular/router";
 import {appRoutes} from "./store/app-routes.routes";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {appRoutes} from "./store/app-routes.routes";
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, ChartEffects]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
