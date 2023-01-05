@@ -12,6 +12,7 @@ import {
   GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
   getMacdAndSignal
 } from "../../store/chart/chart.actions";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-plotter',
@@ -25,15 +26,16 @@ export class PlotterComponent implements OnInit, AfterViewInit{
     this.getComboCandlestickAndEma(),
     this.getMacdAndSignal()
   ];
-  private tickerCode: string = '';
-  private stockExchangeCode: string = '';
+  public tickerCode: string = '';
+  public stockExchangeCode: string = '';
   private begin: string = '';
   private end: string = '';
   private duration: number = 5;
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<Map<string, ChartState>>
+    private store: Store<Map<string, ChartState>>,
+    private titleService: Title
   ) {
   }
 
@@ -57,7 +59,8 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         const componentRef = viewContainerRef.createComponent<ChartComponent>(ChartComponent);
         componentRef.instance.chartModel =  this.chartModels[index];
       });
-    }, 50);
+    }, 100);
+    //TODO tem que ter um jeito de fazer isso sem o timeout, esperando algum observer or some shit like that
   }
 
   ngAfterViewInit(){
@@ -67,6 +70,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
   readParams(params: Params){
     this.tickerCode = params['tickerCode'];
     this.stockExchangeCode = params['stockExchangeCode'];
+    this.titleService.setTitle(this.tickerCode+':'+this.stockExchangeCode);
     this.setCharts();
   }
 
@@ -112,10 +116,12 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
+      [3, 6, 9],
       this.store);
   }
 
   getMacdAndSignal(){
+    //Quero comunicar as options do plotter com a do macd para dar o dispatch na linha 91
     return new ChartModel(
       'ComboMacdAndLine',
       GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
@@ -128,6 +134,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
+      [2, 7, 21],
       this.store);
   }
 }

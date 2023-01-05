@@ -1,4 +1,14 @@
+.container{
+  border: 1px solid black;
+}
+
 .customChart{
   width: auto;
-  min-height: 450px;
+  min-height: 400px;
+}
+
+.options-bar{
+  display: grid;
+  justify-items: end;
+  /*margin-left: 100px;*/
 }

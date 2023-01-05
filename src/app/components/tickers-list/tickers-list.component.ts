@@ -19,6 +19,7 @@ export class TickersListComponent implements OnInit {
   public filteredTickers: Ticker[];
   public date: string;
   public tickerCode: string;
+  public searchStr: string = '';
   public stockExchangeCode: string;
   public duration: number = 5;
 
@@ -37,6 +38,9 @@ export class TickersListComponent implements OnInit {
     this.getAllTickers();
     this.tickers$.subscribe((state) => {
       this.tickers = this.filteredTickers = state.tickers;
+      if(!!this.searchStr){
+        this.filterTickers(this.searchStr);
+      }
     });
     this.readParams(this.route.snapshot.params);
     this.readQueryParams(this.route.snapshot.queryParams);
@@ -46,6 +50,12 @@ export class TickersListComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
     });
+  }
+
+  filterTickers(searchStr: string){
+    this.searchStr = searchStr;
+    const code = this.searchStr.toUpperCase();
+    this.filteredTickers = this.tickers.filter(t => t.code.match('.*'+code+'.*') || t.stockExchangeCode.match('.*'+code+'.*'));
   }
 
   readParams(params: Params){
@@ -63,6 +73,9 @@ export class TickersListComponent implements OnInit {
     }
     if(!!params['begin']){
       this.date = params['begin'].slice(0,10);
+    }
+    if(!!params['search']){
+      this.filterTickers(params['search']);
     }
   }
 
@@ -111,12 +124,12 @@ export class TickersListComponent implements OnInit {
       signalDuration: 21,
     }))
     const path = `${this.stockExchangeCode}/${this.tickerCode}`;
-    this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), duration: this.duration}});
+    this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), duration: this.duration, search: this.searchStr}});
   }
 
   onSearchTicker(){
-    if(this.tickerCode){
-      const code = this.tickerCode.toUpperCase();
+    if(this.searchStr){
+      const code = this.searchStr.toUpperCase();
       this.filteredTickers = this.tickers.filter(t => t.code.match('.*'+code+'.*') || t.stockExchangeCode.match('.*'+code+'.*'));
     } else {
       this.getAllTickers();

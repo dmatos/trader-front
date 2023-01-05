@@ -10,4 +10,6 @@
 
 app-root{
   display: grid;
+  background-color: white;
+  filter: invert();
 }

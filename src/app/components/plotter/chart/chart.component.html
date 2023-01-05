@@ -1,4 +1,11 @@
 <div *ngIf="chartModel; else noChart">
+  <hr>
+  <div class="options-bar">
+    <div>
+      <i class="material-icons">settings</i>
+      <i class="material-icons">download</i>
+    </div>
+  </div>
   <google-chart #chart
                 class="customChart"
                 [title]=""

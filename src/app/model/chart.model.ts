@@ -12,6 +12,7 @@ export class ChartModel{
     public chartType: ChartType,
     public dataModel: ChartDataModel | null | undefined,
     public options: {},
+    public settings: number[],
     private store: Store<Map<string, ChartState|undefined>>
   ) {
   }
@@ -31,4 +32,6 @@ export class ChartModel{
     }
     return arrayOfArrays;
   }
+
+  //TODO Popup with options
 }
