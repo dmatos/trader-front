@@ -17,11 +17,11 @@ export class TickersListComponent implements OnInit {
   tickers$: Observable<TickersState>;
   public tickers: Ticker[];
   public filteredTickers: Ticker[];
-  public date: string;
+  public date: any;
   public tickerCode: string;
-  public searchStr: string = '';
+  public searchStr: any = '';
   public stockExchangeCode: string;
-  public duration: number = 5;
+  public duration: any = 5;
 
   constructor(
     private route: ActivatedRoute,
@@ -119,9 +119,9 @@ export class TickersListComponent implements OnInit {
       stockExchangeCode: this.stockExchangeCode,
       begin: begin,
       end: end,
-      duration1: 2,
-      duration2: 7,
-      signalDuration: 21,
+      duration1: 3,
+      duration2: 15,
+      signalDuration: 5,
     }))
     const path = `${this.stockExchangeCode}/${this.tickerCode}`;
     this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), duration: this.duration, search: this.searchStr}});

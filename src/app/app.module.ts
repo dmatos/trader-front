@@ -19,7 +19,13 @@ import {ChartDirective} from "./components/plotter/chart/chart.directive";
 import {ChartEffects} from "./store/chart/chart.effects";
 import {RouterModule} from "@angular/router";
 import {appRoutes} from "./store/app-routes.routes";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SettingsComponent} from './components/plotter/chart/settings/settings.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCommonModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -27,7 +33,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PlotterComponent,
     TickersListComponent,
     ChartComponent,
-    ChartDirective
+    ChartDirective,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -35,13 +42,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     GoogleChartsModule,
     FormsModule,
     CommonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCommonModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, ChartEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

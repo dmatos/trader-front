@@ -1,0 +1,16 @@
+<div class="macd-form">
+  <h1 mat-dialog-title>Settings</h1>
+  <div *ngFor="let setting of data.settings; let i = index">
+    <div mat-dialog-content>
+      <mat-form-field appearance="fill">
+        <mat-label>{{setting.text}}</mat-label>
+        <input type="setting.type" matInput [(ngModel)]="data.settings[i].value">
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data.settings" cdkFocusInitial>Submit</button>
+  </div>
+</div>
+

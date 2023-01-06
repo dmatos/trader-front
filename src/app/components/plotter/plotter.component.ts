@@ -13,6 +13,8 @@ import {
   getMacdAndSignal
 } from "../../store/chart/chart.actions";
 import {Title} from "@angular/platform-browser";
+import {SettingsComponent} from "./chart/settings/settings.component";
+import {SettingsModel} from "../../model/settings.model";
 
 @Component({
   selector: 'app-plotter',
@@ -48,17 +50,36 @@ export class PlotterComponent implements OnInit, AfterViewInit{
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
     });
-    this.dispatchSelectTickerAction();
+    //TODO esses valores podem deixar de ser hardcoded? podem vir dos params, não podem?
+    this.dispatchSelectTickerAction([{name: "", value: this.duration, text:"", type:""}]);
+    this.dispatchMacdAndSignalAction([
+      {name: "", value: 3, text:"", type:""},
+      {name: "", value: 15, text:"", type:""},
+      {name: "", value: 30, text:"", type:""}
+    ]);
   }
 
   setCharts(){
     setTimeout(()=>{
-      this.charts.forEach((chart, index) => {
+      this.charts.forEach( (chart, index) => {
         const viewContainerRef = (chart as unknown) as ViewContainerRef;
         viewContainerRef.clear();
         const componentRef = viewContainerRef.createComponent<ChartComponent>(ChartComponent);
         componentRef.instance.chartModel =  this.chartModels[index];
-      });
+        componentRef.instance.settingsComponent = SettingsComponent;
+        componentRef.instance.callBack$.subscribe((settings: SettingsModel[]) => {
+          switch (componentRef.instance.chartModel?.chartKey){
+            case  GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE:{
+              this.dispatchMacdAndSignalAction(settings);
+              break;
+            }
+            case GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE:
+              this.dispatchSelectTickerAction(settings);
+              break;
+          }
+          this.setCharts();
+        })
+      })
     }, 100);
     //TODO tem que ter um jeito de fazer isso sem o timeout, esperando algum observer or some shit like that
   }
@@ -81,22 +102,28 @@ export class PlotterComponent implements OnInit, AfterViewInit{
     this.setCharts();
   }
 
-  dispatchSelectTickerAction(){
-    this.store.dispatch(selectTicker({
-      tickerCode: this.tickerCode,
-      stockExchangeCode: this.stockExchangeCode,
-      begin: this.begin,
-      end: this.end,
-      duration: this.duration}));
+  dispatchMacdAndSignalAction(settings: SettingsModel[]){
+    if(!settings) return;
     this.store.dispatch(getMacdAndSignal({
       tickerCode: this.tickerCode,
       stockExchangeCode: this.stockExchangeCode,
       begin: this.begin,
       end: this.end,
-      duration1: 2,
-      duration2: 7,
-      signalDuration: 21,
-    }))
+      duration1: settings[0].value,
+      duration2: settings[1].value,
+      signalDuration: settings[2].value
+    }));
+  }
+
+  dispatchSelectTickerAction(settings: SettingsModel[]){
+    if(!settings) return;
+    this.store.dispatch(selectTicker({
+      tickerCode: this.tickerCode,
+      stockExchangeCode: this.stockExchangeCode,
+      begin: this.begin,
+      end: this.end,
+      duration: settings[0].value
+    }));
   }
 
   getComboCandlestickAndEma(){
@@ -116,12 +143,11 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      [3, 6, 9],
+      [{name: "duration", value: this.duration, text:"EMA #1", type:"number"}],
       this.store);
   }
 
   getMacdAndSignal(){
-    //Quero comunicar as options do plotter com a do macd para dar o dispatch na linha 91
     return new ChartModel(
       'ComboMacdAndLine',
       GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
@@ -134,7 +160,11 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      [2, 7, 21],
+      [
+        {name: "duration1", value: 3, text:"Fast EMA", type:"number"},
+        {name: "duration2", value: 15, text:"Slow EMA", type:"number"},
+        {name: "signalDuration", value: 30, text:"Signal", type:"number"}
+      ],
       this.store);
   }
 }

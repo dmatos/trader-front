@@ -1,8 +1,12 @@
 <div *ngIf="chartModel; else noChart">
   <hr>
   <div class="options-bar">
+    <!--TODO utilizar angular-material no lugar do google material-icons-->
     <div>
-      <i class="material-icons">settings</i>
+      <i
+        class="material-icons"
+        (click)="onSettings()"
+      >settings</i>
       <i class="material-icons">download</i>
     </div>
   </div>

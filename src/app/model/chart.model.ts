@@ -3,6 +3,7 @@ import {select, Store} from "@ngrx/store";
 import {ChartDataModel} from "./chart-data.model";
 import {ChartState} from "../store/chart/chart.state";
 import {selectChart} from "../store/chart/chart.selector";
+import {SettingsModel} from "./settings.model";
 
 export class ChartModel{
   private selector = selectChart;
@@ -12,7 +13,7 @@ export class ChartModel{
     public chartType: ChartType,
     public dataModel: ChartDataModel | null | undefined,
     public options: {},
-    public settings: number[],
+    public settings: SettingsModel[],
     private store: Store<Map<string, ChartState|undefined>>
   ) {
   }
@@ -32,6 +33,4 @@ export class ChartModel{
     }
     return arrayOfArrays;
   }
-
-  //TODO Popup with options
 }
