@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, QueryList, ViewChildren, ViewContainerRef} from '@angular/core';
 import {ChartModel} from "../../model/chart.model";
 import {ChartType} from "angular-google-charts";
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {ChartState} from "../../store/chart/chart.state";
 import {ChartDirective} from "./chart/chart.directive";
 import {ChartComponent} from "./chart/chart.component";
@@ -15,6 +15,10 @@ import {
 import {Title} from "@angular/platform-browser";
 import {SettingsComponent} from "./chart/settings/settings.component";
 import {SettingsModel} from "../../model/settings.model";
+import {Observable} from "rxjs";
+import {SettingsState} from "../../store/settings/settings.state";
+import {selectSettings} from "../../store/settings/settings.selector";
+import {setSettings} from "../../store/settings/settings.actions";
 
 @Component({
   selector: 'app-plotter',
@@ -24,24 +28,30 @@ import {SettingsModel} from "../../model/settings.model";
 export class PlotterComponent implements OnInit, AfterViewInit{
   @ViewChildren('customChart', {read: ViewContainerRef})
   charts!: QueryList<ChartDirective>;
-  public chartModels:ChartModel[] = [
-    this.getComboCandlestickAndEma(),
-    this.getMacdAndSignal()
-  ];
+  public chartModels:ChartModel[];
   public tickerCode: string = '';
   public stockExchangeCode: string = '';
   private begin: string = '';
   private end: string = '';
-  private duration: number = 5;
+  private settings$: Observable<any>;
+  private settings: SettingsState = {settings: new Map<string, SettingsModel>()};
 
   constructor(
     private route: ActivatedRoute,
     private store: Store<Map<string, ChartState>>,
+    private settingsStore: Store<SettingsState>,
     private titleService: Title
   ) {
+    this.settings$ = this.settingsStore.pipe(select(selectSettings));
+    this.chartModels = this.initializeChartModels();
   }
 
   ngOnInit(): void {
+    this.settings$.subscribe( (state) => {
+      if(!!state["settings"]){
+        this.settings = state;
+      }
+    });
     this.readParams(this.route.snapshot.params);
     this.readQueryParams(this.route.snapshot.queryParams);
     this.route.params.subscribe((params) =>{
@@ -50,13 +60,15 @@ export class PlotterComponent implements OnInit, AfterViewInit{
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
     });
-    //TODO esses valores podem deixar de ser hardcoded? podem vir dos params, não podem?
-    this.dispatchSelectTickerAction([{name: "", value: this.duration, text:"", type:""}]);
-    this.dispatchMacdAndSignalAction([
-      {name: "", value: 3, text:"", type:""},
-      {name: "", value: 15, text:"", type:""},
-      {name: "", value: 30, text:"", type:""}
-    ]);
+    this.setCharts();
+  }
+
+  initializeChartModels(){
+    this.chartModels = [
+      this.getComboCandlestickAndEma(),
+      this.getMacdAndSignal()
+    ];
+    return this.chartModels;
   }
 
   setCharts(){
@@ -68,6 +80,11 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         componentRef.instance.chartModel =  this.chartModels[index];
         componentRef.instance.settingsComponent = SettingsComponent;
         componentRef.instance.callBack$.subscribe((settings: SettingsModel[]) => {
+          const settingsState = {settings: new Map<string, SettingsModel>()};
+          settings.forEach( (setting) => {
+            settingsState.settings.set(setting.name, setting);
+          });
+          this.settingsStore.dispatch(setSettings(settingsState));
           switch (componentRef.instance.chartModel?.chartKey){
             case  GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE:{
               this.dispatchMacdAndSignalAction(settings);
@@ -85,6 +102,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(){
+    this.initializeChartModels();
     this.setCharts();
   }
 
@@ -98,7 +116,6 @@ export class PlotterComponent implements OnInit, AfterViewInit{
   readQueryParams(params: Params){
     this.begin = params['begin'];
     this.end = params['end'];
-    this.duration = params['duration'];
     this.setCharts();
   }
 
@@ -109,9 +126,9 @@ export class PlotterComponent implements OnInit, AfterViewInit{
       stockExchangeCode: this.stockExchangeCode,
       begin: this.begin,
       end: this.end,
-      duration1: settings[0].value,
-      duration2: settings[1].value,
-      signalDuration: settings[2].value
+      duration1: this.settings?.settings.get("macdDuration1")?.value,
+      duration2: this.settings?.settings.get("macdDuration2")?.value,
+      signalDuration: this.settings?.settings.get("macdSignalDuration")?.value,
     }));
   }
 
@@ -122,8 +139,17 @@ export class PlotterComponent implements OnInit, AfterViewInit{
       stockExchangeCode: this.stockExchangeCode,
       begin: this.begin,
       end: this.end,
-      duration: settings[0].value
+      duration: this.settings?.settings.get("chartDuration")?.value
     }));
+  }
+
+  getCustomSettings(keys: string[]){
+    let customSettings: SettingsModel[] = [];
+    keys.forEach( key => {
+      let setting = this.settings.settings.get(key);
+      if(!!setting) customSettings.push(setting);
+    })
+    return customSettings;
   }
 
   getComboCandlestickAndEma(){
@@ -137,13 +163,13 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         series: {1 : {type: 'line', color: 'blue'}},
         legend:'none',
         candlestick: {
-          fallingColor: { strokeWidth: 1, stroke:'#000', fill:'#000' },
-          risingColor: { strokeWidth: 1, stroke: '#000', fill:'#fff' }
+          fallingColor: { strokeWidth: 1, stroke:'black', fill:'#00FFFF' },
+          risingColor: { strokeWidth: 1, stroke: 'black', fill:'#FF00FF' },
         },
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      [{name: "duration", value: this.duration, text:"EMA #1", type:"number"}],
+      this.getCustomSettings(["chartDuration"]),
       this.store);
   }
 
@@ -160,11 +186,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      [
-        {name: "duration1", value: 3, text:"Fast EMA", type:"number"},
-        {name: "duration2", value: 15, text:"Slow EMA", type:"number"},
-        {name: "signalDuration", value: 30, text:"Signal", type:"number"}
-      ],
+      this.getCustomSettings(["macdDuration1", "macdDuration2", "macdSignalDuration"]),
       this.store);
   }
 }

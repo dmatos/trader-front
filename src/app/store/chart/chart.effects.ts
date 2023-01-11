@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {CandlestickService} from "../../service/candlestick.service";
 import {filter, Observable, of, switchAll, switchMap, throwError} from "rxjs";
-import {Action} from "@ngrx/store";
 import {
   GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
   getCandlestickAndEma,
@@ -29,7 +28,7 @@ export class ChartEffects{
     private macdService: MacdService
   ) {}
 
-  getCandlestickAndEma$ = createEffect( () : Observable<Action> =>
+  getCandlestickAndEma$ = createEffect( () : Observable<any> =>
     this.actions$.pipe(
       ofType(getCandlestickAndEma),
       switchMap( (action:{tickerCode: string; stockExchangeCode: string; begin: string; end: string; duration: number}) => {
@@ -52,7 +51,7 @@ export class ChartEffects{
     )
   );
 
-  getCandlestickAndEmaAux$(tickerCode: string, stockExchangeCode: string, begin: string, end: string, duration: number):Observable<ChartState|Error>{
+  getCandlestickAndEmaAux$(tickerCode: string, stockExchangeCode: string, begin: string, end: string, duration: number):Observable<any>{
     return this.candlestickService.getCandlestickByTickerCodeAndDateRange(tickerCode, stockExchangeCode, begin, end, duration)
       .pipe(
         filter( (candlestick: CandlestickModel) => !!candlestick),
@@ -103,7 +102,7 @@ export class ChartEffects{
       )
   }
 
-  getMacdAndSignal$ = createEffect( (): Observable<Action> =>
+  getMacdAndSignal$ = createEffect( (): Observable<any> =>
     this.actions$.pipe(
       ofType(getMacdAndSignal),
       switchMap((action) => {

@@ -12,15 +12,9 @@
   display: grid;
 }
 
-.search-params{
-  display: grid;
-  justify-items: start;
-  grid-template-columns: auto auto;
-}
-
 .input-date{
+  display: grid;
   justify-self: stretch;
-  justify-items: stretch;
 }
 
 .input-number{

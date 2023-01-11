@@ -26,6 +26,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCommonModule} from "@angular/material/core";
+import {SettingsEffects} from "./store/settings/settings.effects";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import {MatCommonModule} from "@angular/material/core";
     MatCommonModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([TickersListEffects, ChartEffects]),
+    EffectsModule.forRoot([TickersListEffects, ChartEffects, SettingsEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserAnimationsModule
   ],

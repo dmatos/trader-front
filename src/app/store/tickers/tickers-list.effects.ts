@@ -19,7 +19,7 @@ import {getCandlestickAndEma, getCandlestickAndEmaFail, getMacdAndSignal} from "
 @Injectable()
 export class TickersListEffects {
 
-  getAllTickers$ = createEffect((): Observable<Action> =>
+  getAllTickers$ = createEffect((): Observable<any> =>
     this.actions$.pipe(
       ofType(getAllTickers),
       mergeMap(() => this.tickersService.getAllTickers().pipe(
@@ -31,7 +31,7 @@ export class TickersListEffects {
     )
   );
 
-  searchTickersByCode$ = createEffect((): Observable<Action> =>
+  searchTickersByCode$ = createEffect((): Observable<any> =>
     this.actions$.pipe(
       ofType(searchTickersByCode),
       mergeMap(({code}) => this.tickersService.searchTickersByCode(code).pipe(
@@ -41,7 +41,7 @@ export class TickersListEffects {
     )
   );
 
-  selectTicker$ = createEffect(() : Observable<Action> =>
+  selectTicker$ = createEffect(() : Observable<any> =>
     this.actions$.pipe(
       ofType(selectTicker),
       map(({ tickerCode, stockExchangeCode, begin, end, duration}) => getCandlestickAndEma({tickerCode, stockExchangeCode, begin, end, duration})),
@@ -49,7 +49,7 @@ export class TickersListEffects {
     )
   );
 
-  selectTickerFail$ = createEffect(() : Observable<Action> =>
+  selectTickerFail$ = createEffect(() : Observable<any> =>
     this.actions$.pipe(
       ofType(selectTickerFail),
       map(({ error }) => getCandlestickAndEmaFail({error})),

@@ -17,7 +17,6 @@ export class SettingsComponent {
     public dialogRef: MatDialogRef<SettingsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ){
-    console.log("data: "+data);
   }
 
   onCancel(): void {

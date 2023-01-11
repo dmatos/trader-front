@@ -7,6 +7,8 @@ import {selectTickers} from "../../store/tickers/tickers-list.selector";
 import {TickersState} from "../../store/tickers/tickers-list.state";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {getMacdAndSignal} from "../../store/chart/chart.actions";
+import {SettingsState} from "../../store/settings/settings.state";
+import {selectSettings} from "../../store/settings/settings.selector";
 
 @Component({
   selector: 'app-tickers-list',
@@ -15,19 +17,22 @@ import {getMacdAndSignal} from "../../store/chart/chart.actions";
 })
 export class TickersListComponent implements OnInit {
   tickers$: Observable<TickersState>;
+  settings$: Observable<any>;
   public tickers: Ticker[];
+  private settings: SettingsState | undefined = undefined;
   public filteredTickers: Ticker[];
   public date: any;
   public tickerCode: string;
   public searchStr: any = '';
   public stockExchangeCode: string;
-  public duration: any = 5;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TickersState>) {
+    private store: Store<TickersState>,
+    private settingsStore: Store<SettingsState>) {
     this.tickers$ = this.store.pipe(select(selectTickers));
+    this.settings$ = this.settingsStore.pipe(select(selectSettings));
     this.tickers = this.filteredTickers = [];
     this.date = new Date().toISOString();
     this.tickerCode = "";
@@ -40,6 +45,11 @@ export class TickersListComponent implements OnInit {
       this.tickers = this.filteredTickers = state.tickers;
       if(!!this.searchStr){
         this.filterTickers(this.searchStr);
+      }
+    });
+    this.settings$.subscribe((state) => {
+      if(!!state["settings"]){
+        this.settings = state;
       }
     });
     this.readParams(this.route.snapshot.params);
@@ -68,9 +78,6 @@ export class TickersListComponent implements OnInit {
   }
 
   readQueryParams(params: Params){
-    if(!!params['duration']){
-      this.duration = +params['duration'];
-    }
     if(!!params['begin']){
       this.date = params['begin'].slice(0,10);
     }
@@ -113,18 +120,19 @@ export class TickersListComponent implements OnInit {
       stockExchangeCode: this.stockExchangeCode,
       begin: begin,
       end: end,
-      duration: this.duration}));
+      duration: this.settings?.settings.get("chartDuration")?.value
+    }));
     this.store.dispatch(getMacdAndSignal({
       tickerCode: this.tickerCode,
       stockExchangeCode: this.stockExchangeCode,
       begin: begin,
       end: end,
-      duration1: 3,
-      duration2: 15,
-      signalDuration: 5,
+      duration1: this.settings?.settings.get("macdDuration1")?.value,
+      duration2: this.settings?.settings.get("macdDuration2")?.value,
+      signalDuration: this.settings?.settings.get("macdSignalDuration")?.value,
     }))
     const path = `${this.stockExchangeCode}/${this.tickerCode}`;
-    this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), duration: this.duration, search: this.searchStr}});
+    this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), search: this.searchStr}});
   }
 
   onSearchTicker(){

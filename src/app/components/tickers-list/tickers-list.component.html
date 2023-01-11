@@ -1,24 +1,11 @@
 <div class="tickers-list-container">
-  <div class="search-params">
-    <div class="input-date">
-       <input
-         class="text-align-right"
-         type="date"
-         [(ngModel)]="date"
-         name="date"
-       (change)="onInputChange()">
-    </div>
-    <div class="input-number">
-      <input
-        class="text-align-right"
-        [(ngModel)]="duration"
-        type="number"
-        min="2"
-        max="99"
-        step="1"
-        value="5"
+  <div class="input-date">
+    <input
+      class="text-align-right"
+      type="date"
+      [(ngModel)]="date"
+      name="date"
       (change)="onInputChange()">
-    </div>
   </div>
   <div class="ticker-code">
     <input

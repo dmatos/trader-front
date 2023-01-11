@@ -10,5 +10,8 @@
 .options-bar{
   display: grid;
   justify-items: end;
-  /*margin-left: 100px;*/
+}
+
+i:hover{
+  cursor: pointer;
 }
