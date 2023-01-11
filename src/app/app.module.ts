@@ -26,6 +26,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCommonModule} from "@angular/material/core";
+import {MatDividerModule} from '@angular/material/divider';
 import {SettingsEffects} from "./store/settings/settings.effects";
 
 @NgModule({
@@ -48,6 +49,7 @@ import {SettingsEffects} from "./store/settings/settings.effects";
     MatInputModule,
     MatButtonModule,
     MatCommonModule,
+    MatDividerModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, ChartEffects, SettingsEffects]),
