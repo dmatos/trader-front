@@ -15,15 +15,11 @@
       [(ngModel)]="searchStr"
       (input)="onSearchTicker()">
   </div>
-  <div class="tickers-list">
-    <ul>
-      <li class="no-bullets" *ngFor="let ticker of filteredTickers">
-        <a
-          (click)="onSelectTicker(ticker.code, ticker.stockExchangeCode)"
-        >
-          {{ticker.code}}:{{ticker.stockExchangeCode}}
-        </a>
-      </li>
-    </ul>
-  </div>
+  <mat-selection-list dense [multiple]="false" class="tickers-list">
+    <mat-list-option
+      *ngFor="let ticker of filteredTickers"
+      (click)="onSelectTicker(ticker.code, ticker.stockExchangeCode)">
+      {{ticker.code}}:{{ticker.stockExchangeCode}}
+    </mat-list-option>
+  </mat-selection-list>
 </div>

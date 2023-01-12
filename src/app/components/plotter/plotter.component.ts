@@ -97,7 +97,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
           this.setCharts();
         })
       })
-    }, 100);
+    }, 200);
     //TODO tem que ter um jeito de fazer isso sem o timeout, esperando algum observer or some shit like that
   }
 

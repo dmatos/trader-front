@@ -14,6 +14,7 @@ import {CommonModule} from "@angular/common";
 import {GoogleChartsModule} from "angular-google-charts";
 import {FormsModule} from "@angular/forms";
 import {reducers} from "./store/index";
+import {SettingsEffects} from "./store/settings/settings.effects";
 import {ChartComponent} from "./components/plotter/chart/chart.component";
 import {ChartDirective} from "./components/plotter/chart/chart.directive";
 import {ChartEffects} from "./store/chart/chart.effects";
@@ -27,7 +28,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCommonModule} from "@angular/material/core";
 import {MatDividerModule} from '@angular/material/divider';
-import {SettingsEffects} from "./store/settings/settings.effects";
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {SettingsEffects} from "./store/settings/settings.effects";
     MatButtonModule,
     MatCommonModule,
     MatDividerModule,
+    MatListModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, ChartEffects, SettingsEffects]),
