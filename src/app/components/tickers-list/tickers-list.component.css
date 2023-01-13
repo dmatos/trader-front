@@ -23,6 +23,7 @@
 
 .tickers-list{
   display: grid;
+  justify-content: center;
   max-height: 85vh;
   overflow-y: auto;
 }

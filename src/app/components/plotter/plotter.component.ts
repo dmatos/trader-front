@@ -9,8 +9,9 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {selectTicker} from "../../store/tickers/tickers-list.actions";
 import {
   GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
-  GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
-  getMacdAndSignal
+  GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
+  GET_VOLUME_HISTOGRAM_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
+  getMacdAndSignal, getVolumeHistogram
 } from "../../store/chart/chart.actions";
 import {Title} from "@angular/platform-browser";
 import {SettingsComponent} from "./chart/settings/settings.component";
@@ -66,7 +67,8 @@ export class PlotterComponent implements OnInit, AfterViewInit{
   initializeChartModels(){
     this.chartModels = [
       this.getComboCandlestickAndEma(),
-      this.getMacdAndSignal()
+      this.getMacdAndSignal(),
+      this.getVolumeHistogram()
     ];
     return this.chartModels;
   }
@@ -81,18 +83,21 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         componentRef.instance.settingsComponent = SettingsComponent;
         componentRef.instance.callBack$.subscribe((settings: SettingsModel[]) => {
           const settingsState = {settings: new Map<string, SettingsModel>()};
-          settings.forEach( (setting) => {
+          settings?.forEach( (setting) => {
             settingsState.settings.set(setting.name, setting);
           });
           this.settingsStore.dispatch(setSettings(settingsState));
           switch (componentRef.instance.chartModel?.chartKey){
-            case  GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE:{
+            case  GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE:{
               this.dispatchMacdAndSignalAction(settings);
               break;
             }
             case GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE:
+            case GET_VOLUME_HISTOGRAM_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE: {
               this.dispatchSelectTickerAction(settings);
+              this.dispatchStockQuotesVolumeHistogramAction(settings);
               break;
+            }
           }
           this.setCharts();
         })
@@ -143,6 +148,17 @@ export class PlotterComponent implements OnInit, AfterViewInit{
     }));
   }
 
+  dispatchStockQuotesVolumeHistogramAction(settings: SettingsModel[]){
+    if(!settings) return;
+    this.store.dispatch(getVolumeHistogram({
+      tickerCode: this.tickerCode,
+      stockExchangeCode: this.stockExchangeCode,
+      begin: this.begin,
+      end: this.end,
+      duration: this.settings?.settings.get("chartDuration")?.value
+    }));
+  }
+
   getCustomSettings(keys: string[]){
     let customSettings: SettingsModel[] = [];
     keys.forEach( key => {
@@ -173,10 +189,26 @@ export class PlotterComponent implements OnInit, AfterViewInit{
       this.store);
   }
 
+  getVolumeHistogram(){
+    return new ChartModel(
+      'VolumeHistogram',
+      GET_VOLUME_HISTOGRAM_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
+      ChartType.ComboChart,
+      null,
+      {
+        seriesType: 'bars',
+        legend: 'none',
+        colors:['#000'],
+        hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
+      },
+      this.getCustomSettings(["chartDuration"]),
+      this.store);
+  }
+
   getMacdAndSignal(){
     return new ChartModel(
       'ComboMacdAndLine',
-      GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TIPE,
+      GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
       ChartType.ComboChart,
       null,
       {

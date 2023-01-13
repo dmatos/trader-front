@@ -19,5 +19,12 @@ export const chartReducer = createReducer(
   }),
   on(ChartActions.getMacdAndSignalFail,() => {
     return new Map<string, ChartState|undefined>();
-  })
+  }),
+  on(ChartActions.getVolumeHistogramSuccess, (state, action) => {
+    state.set(action['type'], action);
+    return state;
+  }),
+  on(ChartActions.getVolumeHistogramFail,() => {
+    return new Map<string, ChartState|undefined>();
+  }),
 );

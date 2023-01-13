@@ -6,7 +6,7 @@ import {getAllTickers, selectTicker} from "../../store/tickers/tickers-list.acti
 import {selectTickers} from "../../store/tickers/tickers-list.selector";
 import {TickersState} from "../../store/tickers/tickers-list.state";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {getMacdAndSignal} from "../../store/chart/chart.actions";
+import {getMacdAndSignal, getVolumeHistogram} from "../../store/chart/chart.actions";
 import {SettingsState} from "../../store/settings/settings.state";
 import {selectSettings} from "../../store/settings/settings.selector";
 
@@ -122,6 +122,13 @@ export class TickersListComponent implements OnInit {
       end: end,
       duration: this.settings?.settings.get("chartDuration")?.value
     }));
+    this.store.dispatch(getVolumeHistogram({
+      tickerCode: this.tickerCode,
+      stockExchangeCode: this.stockExchangeCode,
+      begin: begin,
+      end: end,
+      duration: this.settings?.settings.get("chartDuration")?.value
+    }));
     this.store.dispatch(getMacdAndSignal({
       tickerCode: this.tickerCode,
       stockExchangeCode: this.stockExchangeCode,
@@ -130,7 +137,7 @@ export class TickersListComponent implements OnInit {
       duration1: this.settings?.settings.get("macdDuration1")?.value,
       duration2: this.settings?.settings.get("macdDuration2")?.value,
       signalDuration: this.settings?.settings.get("macdSignalDuration")?.value,
-    }))
+    }));
     const path = `${this.stockExchangeCode}/${this.tickerCode}`;
     this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), search: this.searchStr}});
   }

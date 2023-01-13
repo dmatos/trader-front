@@ -9,7 +9,7 @@ import {
   getCandlestickAndEmaSuccess,
   getMacdAndSignal,
   getMacdAndSignalFail,
-  getMacdAndSignalSuccess
+  getMacdAndSignalSuccess, getVolumeHistogram, getVolumeHistogramFail, getVolumeHistogramSuccess
 } from "./chart.actions";
 import {catchError, map} from "rxjs/operators";
 import {EmaService} from "../../service/ema.service";
@@ -18,6 +18,7 @@ import {ChartDataModel} from "../../model/chart-data.model";
 import {CandleModel} from "../../model/candle.model";
 import {ChartState} from "./chart.state";
 import {MacdService} from "../../service/macd.service";
+import {StockQuotesService} from "../../service/stock-quotes.service";
 
 @Injectable()
 export class ChartEffects{
@@ -25,6 +26,7 @@ export class ChartEffects{
     private actions$: Actions,
     private candlestickService: CandlestickService,
     private emaService: EmaService,
+    private stockQuoteService: StockQuotesService,
     private macdService: MacdService
   ) {}
 
@@ -58,7 +60,7 @@ export class ChartEffects{
         map((candlestick: CandlestickModel) => {
           let data = candlestick.candles.map( (candle: CandleModel) => [candle.low, candle.open, candle.close, candle.high]);
           let timestamps = candlestick.candles.map((candle: CandleModel) => {
-            const regexArray = candle.end.match(/\d\d:\d\d:\d\d/);
+            const regexArray = candle.end.match(/\d\d:\d\d/);
             return regexArray?regexArray[0]:'0';
           });
           let dataModel = new ChartDataModel(data,timestamps);
@@ -117,7 +119,7 @@ export class ChartEffects{
               const data: number[][] = [];
               const timestamps: string[] = [];
               response.macd.forEach((ma,index) => {
-                const regexArray = ma.timestamp.match(/\d\d:\d\d:\d\d/);
+                const regexArray = ma.timestamp.match(/\d\d:\d\d/);
                 let timestamp =  regexArray?regexArray[0]:'0';
                 timestamps.push(timestamp);
                 data.push([ma.value, response.signal[index].value]);
@@ -135,4 +137,35 @@ export class ChartEffects{
     )
   );
 
+  getStockQuotesMeanPriceAndVolumeHistogram$ = createEffect( (): Observable<any> =>
+    this.actions$.pipe(
+      ofType(getVolumeHistogram),
+      switchMap((action) => {
+        return this.stockQuoteService.getVolumeHistogramWithMeanPrice(
+          action.tickerCode, action.stockExchangeCode,action.begin, action.end, action.duration)
+          .pipe(
+            map((response) => {
+              if(response instanceof Error){
+                return getVolumeHistogramFail({error: response});
+              }
+              const data: number[][] = [];
+              const timestamps: string[] = [];
+              response.forEach((dataPoint: {timestamp: string, volume: number}) => {
+                const regexArray = dataPoint.timestamp.match(/\d\d:\d\d/);
+                let timestamp =  regexArray?regexArray[0]:'0';
+                timestamps.push(timestamp);
+                data.push([dataPoint.volume]);
+              });
+              const dataModel = new ChartDataModel(data,timestamps);
+              return getVolumeHistogramSuccess({title:action.stockExchangeCode+':'+action.tickerCode, dataModel: dataModel});
+            })
+          )
+      }),
+      catchError(
+        error => {
+          return of(getVolumeHistogramFail({error: error}));
+        }
+      )
+    )
+  );
 }
