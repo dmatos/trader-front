@@ -9,7 +9,7 @@ import {of} from "rxjs";
 export class StockQuotesService{
   constructor(private httpClient: HttpClient) {}
 
-  getVolumeHistogramWithMeanPrice(tickerCode: string, stockExchangeCode: string, begin: string, end: string, durationInMinutes: number){
+  getVolumeHistogramWithMeanPrice(tickerCode: string, stockExchangeCode: string, begin: string, end: string, timeframeInMinutes: number){
     if(!!stockExchangeCode) {
       return this.httpClient.post<ResponseModel>(environment.apiUrl + '/intraday/stockquotes/' + stockExchangeCode,
         {
@@ -17,7 +17,7 @@ export class StockQuotesService{
           "begin": begin,
           "end": end,
           "chronoUnit": "MINUTES",
-          "duration": durationInMinutes
+          "timeframe": timeframeInMinutes
         })
         .pipe(map((response) => {
           if( !!response && response.status === 'OK' && response.data)

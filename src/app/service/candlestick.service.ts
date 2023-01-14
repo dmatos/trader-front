@@ -18,9 +18,9 @@ export class CandlestickService {
    * @param stockExchangeCode
    * @param begin like 2022-11-17T00:58:42.783Z
    * @param end like 2022-11-17T23:58:42.783Z
-   * @param durationInMinutes number of ticks in the candle in minutes
+   * @param timeframeInMinutes number of ticks in the candle in minutes
    */
-  getCandlestickByTickerCodeAndDateRange(tickerCode: string, stockExchangeCode: string, begin: string, end: string, durationInMinutes: number){
+  getCandlestickByTickerCodeAndDateRange(tickerCode: string, stockExchangeCode: string, begin: string, end: string, timeframeInMinutes: number){
     if(!!stockExchangeCode) {
       return this.httpClient.post<ResponseModel>(environment.apiUrl + '/intraday/metadata/candlestick/' + stockExchangeCode,
         {
@@ -28,7 +28,7 @@ export class CandlestickService {
           "begin": begin,
           "end": end,
           "chronoUnit": "MINUTES",
-          "duration": durationInMinutes
+          "timeframe": timeframeInMinutes
         })
         .pipe(map((response) => {
           if( !!response && response.status === 'OK' && response.data)

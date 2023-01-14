@@ -14,22 +14,22 @@ export class MacdService{
     stockExchangeCode: string,
     begin: string,
     end: string,
-    durationInMinutes1: number,
-    durationInMinutes2: number,
-    signalDuration: number,
+    timeframeInMinutes1: number,
+    timeframeInMinutes2: number,
+    signaltimeframe: number,
   ){
     if(!tickerCode || !stockExchangeCode){
       return of(Error('Either tickerCode or stockExchange is not defined.'));
     }
-    if(!durationInMinutes1 || !durationInMinutes2 || !signalDuration){
-      return of(Error('Either durations or signal is not defined'));
+    if(!timeframeInMinutes1 || !timeframeInMinutes2 || !signaltimeframe){
+      return of(Error('Either timeframes or signal is not defined'));
     }
-    return this.httpClient.post<ResponseModel>(environment.apiUrl+`/intraday/metadata/ma/macd/${stockExchangeCode}/${durationInMinutes1}/${durationInMinutes2}/${signalDuration}`,
+    return this.httpClient.post<ResponseModel>(environment.apiUrl+`/intraday/metadata/ma/macd/${stockExchangeCode}/${timeframeInMinutes1}/${timeframeInMinutes2}/${signaltimeframe}`,
       {
         "tickerCode": tickerCode,
         "begin": begin,
         "end": end,
-        "size": 0
+        "timeframe": 0
       }
     ).pipe(map((response) =>{
         if(!!response && response.status === 'OK' && response.data)

@@ -120,23 +120,23 @@ export class TickersListComponent implements OnInit {
       stockExchangeCode: this.stockExchangeCode,
       begin: begin,
       end: end,
-      duration: this.settings?.settings.get("chartDuration")?.value
+      timeframe: this.settings?.settings.get("chartTimeframe")?.value
     }));
     this.store.dispatch(getVolumeHistogram({
       tickerCode: this.tickerCode,
       stockExchangeCode: this.stockExchangeCode,
       begin: begin,
       end: end,
-      duration: this.settings?.settings.get("chartDuration")?.value
+      timeframe: this.settings?.settings.get("chartTimeframe")?.value
     }));
     this.store.dispatch(getMacdAndSignal({
       tickerCode: this.tickerCode,
       stockExchangeCode: this.stockExchangeCode,
       begin: begin,
       end: end,
-      duration1: this.settings?.settings.get("macdDuration1")?.value,
-      duration2: this.settings?.settings.get("macdDuration2")?.value,
-      signalDuration: this.settings?.settings.get("macdSignalDuration")?.value,
+      timeframe1: this.settings?.settings.get("macdTimeframe1")?.value,
+      timeframe2: this.settings?.settings.get("macdTimeframe2")?.value,
+      signalTimeframe: this.settings?.settings.get("macdSignalTimeframe")?.value,
     }));
     const path = `${this.stockExchangeCode}/${this.tickerCode}`;
     this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), search: this.searchStr}});

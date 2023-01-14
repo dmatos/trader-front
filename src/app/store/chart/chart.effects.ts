@@ -33,8 +33,8 @@ export class ChartEffects{
   getCandlestickAndEma$ = createEffect( () : Observable<any> =>
     this.actions$.pipe(
       ofType(getCandlestickAndEma),
-      switchMap( (action:{tickerCode: string; stockExchangeCode: string; begin: string; end: string; duration: number}) => {
-        return this.getCandlestickAndEmaAux$(action.tickerCode, action.stockExchangeCode, action.begin, action.end, action.duration)
+      switchMap( (action:{tickerCode: string; stockExchangeCode: string; begin: string; end: string; timeframe: number}) => {
+        return this.getCandlestickAndEmaAux$(action.tickerCode, action.stockExchangeCode, action.begin, action.end, action.timeframe)
           .pipe(
             map((chartState) => {
               if(chartState instanceof Error){
@@ -53,8 +53,8 @@ export class ChartEffects{
     )
   );
 
-  getCandlestickAndEmaAux$(tickerCode: string, stockExchangeCode: string, begin: string, end: string, duration: number):Observable<any>{
-    return this.candlestickService.getCandlestickByTickerCodeAndDateRange(tickerCode, stockExchangeCode, begin, end, duration)
+  getCandlestickAndEmaAux$(tickerCode: string, stockExchangeCode: string, begin: string, end: string, timeframe: number):Observable<any>{
+    return this.candlestickService.getCandlestickByTickerCodeAndDateRange(tickerCode, stockExchangeCode, begin, end, timeframe)
       .pipe(
         filter( (candlestick: CandlestickModel) => !!candlestick),
         map((candlestick: CandlestickModel) => {
@@ -65,7 +65,7 @@ export class ChartEffects{
           });
           let dataModel = new ChartDataModel(data,timestamps);
           return {
-            title: stockExchangeCode+':'+tickerCode,
+            title: stockExchangeCode+':'+tickerCode+' timeframe: '+timeframe,
             dataModel: dataModel
           };
         }),
@@ -75,7 +75,7 @@ export class ChartEffects{
             return {
               title: title,
               chartDataModel: dataModel,
-              response: this.emaService.getExponentialMovingAverageByTickerCodeAndDateRange(tickerCode, stockExchangeCode, begin, end, duration)
+              response: this.emaService.getExponentialMovingAverageByTickerCodeAndDateRange(tickerCode, stockExchangeCode, begin, end, timeframe)
             }
           }
         )
@@ -110,7 +110,7 @@ export class ChartEffects{
       switchMap((action) => {
         return this.macdService.getMacdByTickerCodeAndDateRange(
           action.tickerCode, action.stockExchangeCode,action.begin,
-          action.end, action.duration1, action.duration2, action.signalDuration)
+          action.end, action.timeframe1, action.timeframe2, action.signalTimeframe)
           .pipe(
             map((response) => {
               if(response instanceof Error){
@@ -142,7 +142,7 @@ export class ChartEffects{
       ofType(getVolumeHistogram),
       switchMap((action) => {
         return this.stockQuoteService.getVolumeHistogramWithMeanPrice(
-          action.tickerCode, action.stockExchangeCode,action.begin, action.end, action.duration)
+          action.tickerCode, action.stockExchangeCode,action.begin, action.end, action.timeframe)
           .pipe(
             map((response) => {
               if(response instanceof Error){

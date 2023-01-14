@@ -39,7 +39,7 @@ export const selectTicker = createAction(
     stockExchangeCode: string,
     begin: string,
     end: string,
-    duration: number
+    timeframe: number
   }>()
 );
 export const selectTickerSuccess = createAction(

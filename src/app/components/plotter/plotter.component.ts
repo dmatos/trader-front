@@ -131,9 +131,9 @@ export class PlotterComponent implements OnInit, AfterViewInit{
       stockExchangeCode: this.stockExchangeCode,
       begin: this.begin,
       end: this.end,
-      duration1: this.settings?.settings.get("macdDuration1")?.value,
-      duration2: this.settings?.settings.get("macdDuration2")?.value,
-      signalDuration: this.settings?.settings.get("macdSignalDuration")?.value,
+      timeframe1: this.settings?.settings.get("macdTimeframe1")?.value,
+      timeframe2: this.settings?.settings.get("macdTimeframe2")?.value,
+      signalTimeframe: this.settings?.settings.get("macdSignalTimeframe")?.value,
     }));
   }
 
@@ -144,7 +144,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
       stockExchangeCode: this.stockExchangeCode,
       begin: this.begin,
       end: this.end,
-      duration: this.settings?.settings.get("chartDuration")?.value
+      timeframe: this.settings?.settings.get("chartTimeframe")?.value
     }));
   }
 
@@ -155,7 +155,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
       stockExchangeCode: this.stockExchangeCode,
       begin: this.begin,
       end: this.end,
-      duration: this.settings?.settings.get("chartDuration")?.value
+      timeframe: this.settings?.settings.get("chartTimeframe")?.value
     }));
   }
 
@@ -179,13 +179,13 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         series: {1 : {type: 'line', color: 'blue'}},
         legend:'none',
         candlestick: {
-          fallingColor: { strokeWidth: 1, stroke:'black', fill:'#00FFFF' },
-          risingColor: { strokeWidth: 1, stroke: 'black', fill:'#FF00FF' },
+          fallingColor: { strokeWidth: 1, stroke:'black', fill:'#000000' },
+          risingColor: { strokeWidth: 1, stroke: 'black', fill:'#FFFFFF' },
         },
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      this.getCustomSettings(["chartDuration"]),
+      this.getCustomSettings(["chartTimeframe"]),
       this.store);
   }
 
@@ -201,7 +201,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      this.getCustomSettings(["chartDuration"]),
+      this.getCustomSettings(["chartTimeframe"]),
       this.store);
   }
 
@@ -218,7 +218,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
-      this.getCustomSettings(["macdDuration1", "macdDuration2", "macdSignalDuration"]),
+      this.getCustomSettings(["macdTimeframe1", "macdTimeframe2", "macdSignalTimeframe"]),
       this.store);
   }
 }

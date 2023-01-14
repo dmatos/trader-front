@@ -18,7 +18,7 @@ export const getCandlestickAndEma = createAction(
     stockExchangeCode: string,
     begin: string,
     end: string,
-    duration: number
+    timeframe: number
   }>()
 );
 
@@ -41,7 +41,7 @@ export const getVolumeHistogram = createAction(
     stockExchangeCode: string,
     begin: string,
     end: string,
-    duration: number
+    timeframe: number
   }>()
 );
 
@@ -64,9 +64,9 @@ export const getMacdAndSignal = createAction(
     stockExchangeCode: string,
     begin: string,
     end: string,
-    duration1: number,
-    duration2: number,
-    signalDuration: number
+    timeframe1: number,
+    timeframe2: number,
+    signalTimeframe: number
   }>()
 );
 

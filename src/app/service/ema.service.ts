@@ -14,14 +14,14 @@ export class EmaService {
     stockExchangeCode: string,
     begin: string,
     end: string,
-    durationInMinutes: number
+    timeframeInMinutes: number
   ) {
     return this.httpClient.post<ResponseModel>(environment.apiUrl + '/intraday/metadata/ma/ema/' + stockExchangeCode,
       {
         "tickerCode": tickerCode,
         "begin": begin,
         "end": end,
-        "size": durationInMinutes
+        "timeframe": timeframeInMinutes
       })
       .pipe(map( response =>{
           if(response && response.data)

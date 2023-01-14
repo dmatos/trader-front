@@ -44,7 +44,7 @@ export class TickersListEffects {
   selectTicker$ = createEffect(() : Observable<any> =>
     this.actions$.pipe(
       ofType(selectTicker),
-      map(({ tickerCode, stockExchangeCode, begin, end, duration}) => getCandlestickAndEma({tickerCode, stockExchangeCode, begin, end, duration})),
+      map(({ tickerCode, stockExchangeCode, begin, end, timeframe}) => getCandlestickAndEma({tickerCode, stockExchangeCode, begin, end, timeframe})),
       catchError( error => of(selectTickerFail({error: error})))
     )
   );
