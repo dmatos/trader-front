@@ -5,6 +5,7 @@
   font-size: 22px;
   align-self: end;
   justify-self: start;
+  justify-content: stretch;
   /*background-color: white;*/
 }
 
@@ -24,8 +25,9 @@
 .tickers-list{
   display: grid;
   justify-content: center;
-  max-height: 85vh;
+  max-height: 75vh;
   overflow-y: auto;
+  min-width: 200px;
 }
 
 .no-bullets{

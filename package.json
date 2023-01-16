@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "run": "ng serve"
+  },
   "dependencies": {
     "@angular/animations": "^15.0.0 || ^16.0.0",
     "@angular/cdk": "^15.0.4",

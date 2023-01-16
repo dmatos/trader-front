@@ -1,20 +1,24 @@
 <div class="tickers-list-container">
-  <div class="input-date">
+  <mat-form-field class="input-date">
     <input
+      matInput [matDatepicker]="picker"
       class="text-align-right"
-      type="date"
-      [(ngModel)]="date"
-      name="date"
-      (change)="onInputChange()">
-  </div>
-  <div class="ticker-code">
-    <input
+      (dateInput)="onDateEvent($event)"
+      (dateChange)="onDateEvent($event)"
+    >
+    <mat-datepicker-toggle matIconSuffix [for]="picker">
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="ticker-code">
+    <mat-label>SEARCH</mat-label>
+    <input matInput
       type="text"
       class="ticker-code-input"
       placeholder="TICKER CODE"
       [(ngModel)]="searchStr"
       (input)="onSearchTicker()">
-  </div>
+  </mat-form-field>
   <mat-selection-list dense [multiple]="false" class="tickers-list">
     <mat-list-option
       *ngFor="let ticker of filteredTickers"

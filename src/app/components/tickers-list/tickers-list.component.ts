@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Ticker} from "../../model/ticker.model";
 import {select, Store} from "@ngrx/store";
 import {Observable} from "rxjs";
@@ -9,6 +9,7 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {getMacdAndSignal, getVolumeHistogram} from "../../store/chart/chart.actions";
 import {SettingsState} from "../../store/settings/settings.state";
 import {selectSettings} from "../../store/settings/settings.selector";
+import {MatDatepickerControl, MatDatepickerInputEvent, MatDatepickerPanel} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-tickers-list',
@@ -88,6 +89,11 @@ export class TickersListComponent implements OnInit {
 
   getAllTickers(){
     this.store.dispatch(getAllTickers());
+  }
+
+  onDateEvent(event: MatDatepickerInputEvent<Date>){
+    this.date = event.value;
+    this.onInputChange();
   }
 
   onInputChange(){
