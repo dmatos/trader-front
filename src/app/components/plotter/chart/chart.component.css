@@ -1,12 +1,13 @@
 .container{
-  border: 1px solid;
+  overflow-y: auto;
+  max-width: 85vw;
 }
 
 .customChart{
   width: auto;
-  min-height: 280px;
-  border: 1px solid;
-  box-shadow: 2px 2px;
+  /*height: auto;*/
+  /*border: 1px solid;*/
+  /*box-shadow: 2px 2px;*/
 }
 
 .options-bar{
@@ -14,6 +15,6 @@
   justify-items: end;
 }
 
-i:hover{
+mat-icon:hover{
   cursor: pointer;
 }

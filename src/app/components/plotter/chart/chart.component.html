@@ -1,23 +1,29 @@
-<div *ngIf="chartModel; else noChart">
-  <mat-divider></mat-divider>
-  <div class="options-bar">
-    <div>
-      <i
-        class="material-icons"
-        (click)="onSettings()"
-      >settings</i>
-      <i class="material-icons">download</i>
-    </div>
-  </div>
-  <google-chart #chart
-                class="customChart"
-                [title]=chartModel.title
-                [type]="chartModel.chartType"
-                [data]="data"
-                [options]="chartModel.options">
-  </google-chart>
-  <mat-divider></mat-divider>
+<div class="container">
+  <mat-card *ngIf="chartModel; else noChart">
+    <mat-card-actions class="options-bar">
+      <div>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Chart settings"
+          fontIcon="settings"
+          (click)="onSettings()">
+        </mat-icon>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Download"
+          fontIcon="download">
+        </mat-icon>
+      </div>
+    </mat-card-actions>
+    <google-chart #chart
+                  class="customChart"
+                  [type]="chartModel.chartType"
+                  [data]="data"
+                  [options]="chartModel.options">
+    </google-chart>
+  </mat-card>
+  <br>
+  <ng-template #noChart>
+    <p>No chart available</p>
+  </ng-template>
 </div>
-<ng-template #noChart>
-  <p>No chart available</p>
-</ng-template>

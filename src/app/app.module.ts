@@ -30,6 +30,8 @@ import {MatCommonModule, MatNativeDateModule} from "@angular/material/core";
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatListModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatIconModule,
+    MatCardModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, ChartEffects, SettingsEffects]),

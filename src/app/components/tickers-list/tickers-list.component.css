@@ -2,11 +2,9 @@
   display: grid;
   grid-template-columns: auto;
   row-gap: 15px;
-  font-size: 22px;
   align-self: end;
   justify-self: start;
   justify-content: stretch;
-  /*background-color: white;*/
 }
 
 .ticker-code{
