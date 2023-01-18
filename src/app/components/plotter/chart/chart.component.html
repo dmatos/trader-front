@@ -1,26 +1,24 @@
 <div class="container">
   <mat-card *ngIf="chartModel; else noChart">
-    <mat-card-actions class="options-bar">
-      <div>
-        <mat-icon
-          aria-hidden="false"
-          aria-label="Chart settings"
-          fontIcon="settings"
-          (click)="onSettings()">
-        </mat-icon>
-        <mat-icon
-          aria-hidden="false"
-          aria-label="Download"
-          fontIcon="download">
-        </mat-icon>
-      </div>
-    </mat-card-actions>
     <google-chart #chart
                   class="customChart"
                   [type]="chartModel.chartType"
                   [data]="data"
                   [options]="chartModel.options">
     </google-chart>
+    <mat-card-actions class="options-bar">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Chart settings"
+        fontIcon="settings"
+        (click)="onSettings()">
+      </mat-icon>
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Download"
+        fontIcon="download">
+      </mat-icon>
+    </mat-card-actions>
   </mat-card>
   <br>
   <ng-template #noChart>

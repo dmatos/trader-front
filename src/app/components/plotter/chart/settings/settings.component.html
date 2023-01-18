@@ -1,11 +1,24 @@
 <div class="settings-form">
   <h1 mat-dialog-title>Settings</h1>
-  <div *ngFor="let setting of data.settings; let i = index">
+  <div
+    class="settings-form"
+    *ngFor="let setting of data.settings; let i = index">
     <div mat-dialog-content>
-      <mat-form-field appearance="fill">
-        <mat-label>{{setting.text}}</mat-label>
-        <input type="setting.type" matInput [(ngModel)]="data.settings[i].value">
-      </mat-form-field>
+      <div *ngIf="setting.type=='range'; else genericSetting">
+        <mat-form-field class="grid" >
+          <mat-label>{{setting.text}}</mat-label>
+          <input type="number" matInput [(ngModel)]="data.settings[i].value">
+        </mat-form-field>
+        <mat-slider class="grid"  [min]="1">
+          <input type="range" matSliderThumb [(ngModel)]="data.settings[i].value">
+        </mat-slider>
+      </div>
+      <ng-template #genericSetting>
+        <mat-form-field >
+          <mat-label>{{setting.text}}</mat-label>
+          <input type="setting.type" matInput [(ngModel)]="data.settings[i].value">
+        </mat-form-field>
+      </ng-template>
     </div>
   </div>
   <div mat-dialog-actions>
