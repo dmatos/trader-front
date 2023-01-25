@@ -11,8 +11,7 @@ import {select, Store} from "@ngrx/store";
 import {ChartState} from "../../../store/chart/chart.state";
 import {SettingsComponent} from "../settings/settings.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Observable, Subject} from "rxjs";
-import {ComponentType} from "@angular/cdk/overlay";
+import {Observable} from "rxjs";
 import {selectSettings} from "../../../store/settings/settings.selector";
 import {SettingsState} from "../../../store/settings/settings.state";
 import {selectTicker} from "../../../store/tickers/tickers-list.actions";
@@ -26,12 +25,11 @@ import {Title} from "@angular/platform-browser";
 })
 export class CandlestickComponent{
 
-  candlestickChartModel: ChartModel | null = null;
-  volumeChartModel: ChartModel | null = null;
+  candlestickChartModel: ChartModel = this.getComboCandlestickAndEma();
+  volumeChartModel: ChartModel = this.getVolumeHistogram();
   candlestickData: (string|number)[][]|undefined = undefined;
   volumeData: (string|number)[][]|undefined = undefined;
-  public defaultType = ChartType.ComboChart;
-  public settingsComponent: ComponentType<SettingsComponent> | undefined;
+  public settingsComponent = SettingsComponent;
   private settings$: Observable<any>;
   public _KEY = "chartTimeframe";
   private settings: SettingsState = {settings: new Map<string, SettingsModel>()};
@@ -40,6 +38,7 @@ export class CandlestickComponent{
   @Input() begin: string = '';
   @Input() end: string = '';
   @Input() settingsModel: SettingsModel[] = [];
+  searchString = '';
 
   constructor(
     private store: Store<Map<string, ChartState>>,
@@ -57,7 +56,7 @@ export class CandlestickComponent{
         this.settings = state;
       }
     });
-   this.setSubscriptions();
+    this.setSubscriptions();
     this.route.params.subscribe((params) =>{
       this.readParams(params);
     });
@@ -67,24 +66,26 @@ export class CandlestickComponent{
   }
 
   setSubscriptions(){
-    this.candlestickChartModel = this.getComboCandlestickAndEma();
-    this.volumeChartModel = this.getVolumeHistogram();
-    this.candlestickChartModel.getObservable$().subscribe((data) => {
-      console.log(data);
-      const chartKey = this.candlestickChartModel?.chartKey;
-      if(chartKey && this.candlestickChartModel && data.get(chartKey)){
-        this.candlestickChartModel.dataModel = data.get(chartKey)?.dataModel;
-        this.candlestickData = this.candlestickChartModel.getDataAsArrayOfArrays();
-      }
-    });
-    this.volumeChartModel.getObservable$().subscribe((data) => {
-      console.log(data);
-      const chartKey = this.volumeChartModel?.chartKey;
-      if(chartKey && this.volumeChartModel && data.get(chartKey)){
-        this.volumeChartModel.dataModel = data.get(chartKey)?.dataModel;
-        this.volumeData = this.volumeChartModel.getDataAsArrayOfArrays();
-      }
-    });
+    setTimeout( () => {
+      this.candlestickChartModel.getObservable$().subscribe((data) => {
+        console.log(data);
+        const chartKey = this.candlestickChartModel?.chartKey;
+        if (chartKey && this.candlestickChartModel && data.get(chartKey)) {
+          this.candlestickChartModel.dataModel = data.get(chartKey)?.dataModel;
+          this.candlestickData = this.candlestickChartModel.getDataAsArrayOfArrays();
+        }
+      });
+      this.volumeChartModel.getObservable$().subscribe((data) => {
+          console.log(data);
+          const chartKey = this.volumeChartModel?.chartKey;
+          if (chartKey && this.volumeChartModel && data.get(chartKey)) {
+            this.volumeChartModel.dataModel = data.get(chartKey)?.dataModel;
+            this.volumeData = this.volumeChartModel.getDataAsArrayOfArrays();
+          }
+        }
+      )
+    }, 200);
+
   }
 
   readParams(params: Params){
@@ -97,6 +98,7 @@ export class CandlestickComponent{
   readQueryParams(params: Params){
     this.begin = params['begin'];
     this.end = params['end'];
+    this.searchString = params['search']
     this.setSubscriptions();
   }
 
@@ -164,12 +166,13 @@ export class CandlestickComponent{
       const dialogRef = this.dialog.open(this.settingsComponent, {
         width: '350px',
         data: {
-          settings: this.candlestickChartModel?.settings,
+          settings: [this.settings.settings.get(this._KEY)]
         },
       });
       dialogRef.afterClosed().subscribe((settings: SettingsModel[]) => {
         this.dispatchSelectTickerAction(settings);
         this.dispatchStockQuotesVolumeHistogramAction(settings);
+        this.setSubscriptions();
       });
     }
   }
