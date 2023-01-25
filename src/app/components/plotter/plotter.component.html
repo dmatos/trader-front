@@ -1,6 +1,10 @@
 <div class="plotter">
-  <div *ngFor="let chartModel of chartModels">
-    <ng-template #customChart> </ng-template>
-  </div>
+  <app-candlestick
+  [tickerCode]="tickerCode"
+  [stockExchangeCode]="stockExchangeCode"
+  [begin]="begin"
+  [end]="end"
+  [settingsModel]="getCustomSettings(['chartTimeframe'])">
+  </app-candlestick>
 </div>
 

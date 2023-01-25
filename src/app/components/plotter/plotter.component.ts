@@ -14,7 +14,7 @@ import {
   getMacdAndSignal, getVolumeHistogram
 } from "../../store/chart/chart.actions";
 import {Title} from "@angular/platform-browser";
-import {SettingsComponent} from "./chart/settings/settings.component";
+import {SettingsComponent} from "./settings/settings.component";
 import {SettingsModel} from "../../model/settings.model";
 import {Observable} from "rxjs";
 import {SettingsState} from "../../store/settings/settings.state";
@@ -32,8 +32,8 @@ export class PlotterComponent implements OnInit, AfterViewInit{
   public chartModels:ChartModel[];
   public tickerCode: string = '';
   public stockExchangeCode: string = '';
-  private begin: string = '';
-  private end: string = '';
+  public begin: string = '';
+  public end: string = '';
   private settings$: Observable<any>;
   private settings: SettingsState = {settings: new Map<string, SettingsModel>()};
 
@@ -61,14 +61,14 @@ export class PlotterComponent implements OnInit, AfterViewInit{
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
     });
-    this.setCharts();
+    // this.setCharts();
   }
 
   initializeChartModels(){
     this.chartModels = [
-      this.getComboCandlestickAndEma(),
-      this.getMacdAndSignal(),
-      this.getVolumeHistogram()
+      // this.getComboCandlestickAndEma(),
+      // this.getMacdAndSignal(),
+      // this.getVolumeHistogram()
     ];
     return this.chartModels;
   }
@@ -99,7 +99,7 @@ export class PlotterComponent implements OnInit, AfterViewInit{
               break;
             }
           }
-          this.setCharts();
+          // this.setCharts();
         })
       })
     }, 200);
@@ -108,20 +108,20 @@ export class PlotterComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(){
     this.initializeChartModels();
-    this.setCharts();
+    // this.setCharts();
   }
 
   readParams(params: Params){
     this.tickerCode = params['tickerCode'];
     this.stockExchangeCode = params['stockExchangeCode'];
     this.titleService.setTitle(this.tickerCode+':'+this.stockExchangeCode);
-    this.setCharts();
+    // this.setCharts();
   }
 
   readQueryParams(params: Params){
     this.begin = params['begin'];
     this.end = params['end'];
-    this.setCharts();
+    // this.setCharts();
   }
 
   dispatchMacdAndSignalAction(settings: SettingsModel[]){

@@ -1,0 +1,36 @@
+<div class="container">
+  <mat-card *ngIf="candlestickChartModel; else noChart">
+    <mat-card-actions class="options-bar">
+      <div>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Chart settings"
+          fontIcon="settings"
+          (click)="onSettings()">
+        </mat-icon>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Download"
+          fontIcon="download">
+        </mat-icon>
+      </div>
+    </mat-card-actions>
+    <google-chart *ngIf="candlestickChartModel && candlestickData" #chart
+                  class="customChart"
+                  [type]="candlestickChartModel.chartType"
+                  [data]="candlestickData"
+                  [options]="candlestickChartModel.options">
+    </google-chart>
+    <google-chart *ngIf="volumeChartModel && volumeData"
+                  #chart2
+                  class="customChart"
+                  [type]="volumeChartModel.chartType"
+                  [data]="volumeData"
+                  [options]="volumeChartModel.options">
+    </google-chart>
+  </mat-card>
+  <br>
+  <ng-template #noChart>
+    <p>No chart available</p>
+  </ng-template>
+</div>

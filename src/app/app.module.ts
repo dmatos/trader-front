@@ -21,7 +21,7 @@ import {ChartEffects} from "./store/chart/chart.effects";
 import {RouterModule} from "@angular/router";
 import {appRoutes} from "./store/app-routes.routes";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {SettingsComponent} from './components/plotter/chart/settings/settings.component';
+import {SettingsComponent} from './components/plotter/settings/settings.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -32,6 +32,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from "@angular/material/card";
+import { CandlestickComponent } from './components/plotter/candlestick/candlestick.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {MatCardModule} from "@angular/material/card";
     TickersListComponent,
     ChartComponent,
     ChartDirective,
-    SettingsComponent
+    SettingsComponent,
+    CandlestickComponent
   ],
   imports: [
     BrowserModule,

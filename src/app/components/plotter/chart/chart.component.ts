@@ -6,7 +6,7 @@ import {ChartType} from "angular-google-charts";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ComponentType} from "@angular/cdk/overlay";
 import {SettingsModel} from "../../../model/settings.model";
-import {SettingsComponent} from "./settings/settings.component";
+import {SettingsComponent} from "../settings/settings.component";
 
 @Component({
   selector: 'app-chart',
