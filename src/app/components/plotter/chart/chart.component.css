@@ -5,25 +5,16 @@
 
 .customChart{
   width: auto;
-  height: 280px;
+  /*height: auto;*/
+  /*border: 1px solid;*/
+  /*box-shadow: 2px 2px;*/
 }
 
 .options-bar{
   display: grid;
-  align-content: start;
-  row-gap: 0.1em;
+  justify-items: end;
 }
 
 mat-icon:hover{
   cursor: pointer;
-}
-
-mat-card{
-  display: grid;
-  grid-template-columns: 23fr 1fr;
-}
-
-google-chart{
-  padding: 0;
-  margin: 0;
 }

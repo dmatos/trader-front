@@ -9,6 +9,8 @@
 
 app-root{
   display: grid;
+  /*background-color: white;*/
+  /*filter: invert();*/
 }
 
 html, body { height: 100%; }

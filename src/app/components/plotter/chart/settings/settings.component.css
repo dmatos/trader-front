@@ -1,12 +1,5 @@
-.grid{
-  display: grid;
-}
-
 .settings-form{
   display: grid;
   justify-items: center;
-}
-
-input{
-  text-align: center;
+  justify-content: center;
 }

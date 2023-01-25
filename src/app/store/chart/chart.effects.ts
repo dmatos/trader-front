@@ -87,7 +87,7 @@ export class ChartEffects{
               }
               else{
                 chartDataModel.timestamps.forEach((ts, i) => {
-                  const movingAverage = movingAverageResponseModel.movingAverages.filter((ma: any) => ma.timestamp.match(ts+":"));
+                  const movingAverage = movingAverageResponseModel.movingAverages.filter((ma: any) => ma.timestamp.match(ts));
                   if (!!movingAverage && movingAverage.length > 0) {
                     chartDataModel.data[i].push(movingAverage[0].value);
                   } else {
