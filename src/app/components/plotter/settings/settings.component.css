@@ -3,3 +3,26 @@
   justify-items: center;
   justify-content: center;
 }
+
+.mat-dialog-content{
+  display: grid;
+  justify-items: center;
+  justify-content: center;
+}
+
+input{
+  text-align: center;
+}
+
+.mat-mdc-form-field{
+  display: grid;
+  justify-items: center;
+  justify-content: center;
+}
+
+.mat-mdc-slider{
+  display: grid;
+  justify-items: center;
+  justify-content: center;
+}
+

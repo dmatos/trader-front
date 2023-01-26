@@ -114,13 +114,13 @@ export class CandlestickComponent{
       null,
       {
         seriesType: 'candlesticks',
-        series: {1 : {type: 'line', color: 'blue'}},
+        series: {1 : {type: 'line', color: '#2196f3'}},
         legend:'none',
         candlestick: {
           fallingColor: { strokeWidth: 1, stroke:'black', fill:'#000000' },
           risingColor: { strokeWidth: 1, stroke: 'black', fill:'#FFFFFF' },
         },
-        colors:['#000'],
+        colors:['#2196f3'],
         hAxis: {textPosition: 'none'}
       },
       this.settingsModel,
@@ -136,7 +136,7 @@ export class CandlestickComponent{
       {
         seriesType: 'bars',
         legend: 'none',
-        colors:['#000'],
+        colors:['#2196f3'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },
       this.settingsModel,

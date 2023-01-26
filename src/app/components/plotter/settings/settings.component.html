@@ -6,6 +6,13 @@
         <mat-label>{{setting.text}}</mat-label>
         <input type="setting.type" matInput [(ngModel)]="data.settings[i].value">
       </mat-form-field>
+      <mat-slider
+        [max]="100"
+        [min]="1"
+        [step]="1"
+        [showTickMarks]="true">
+        <input matSliderThumb [(ngModel)]="data.settings[i].value">
+      </mat-slider>
     </div>
   </div>
   <div mat-dialog-actions>

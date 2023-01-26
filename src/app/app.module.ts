@@ -34,6 +34,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from "@angular/material/card";
 import { CandlestickComponent } from './components/plotter/candlestick/candlestick.component';
 import { MacdComponent } from './components/plotter/macd/macd.component';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { MacdComponent } from './components/plotter/macd/macd.component';
     MatNativeDateModule,
     MatIconModule,
     MatCardModule,
+    MatSliderModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, ChartEffects, SettingsEffects]),
