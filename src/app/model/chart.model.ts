@@ -26,7 +26,7 @@ export class ChartModel{
     let arrayOfArrays: ((string | number)[])[] = [];
     if (this.dataModel) {
       for (let index = 0; index < this.dataModel.timestamps.length; index++) {
-        const el = this.dataModel.timestamps[index];
+        const el = this.dataModel.timestamps[index].substr(0, 5);
         arrayOfArrays.push([el]);
         arrayOfArrays[index] = arrayOfArrays[index].concat(this.dataModel.data[index]);
       }
