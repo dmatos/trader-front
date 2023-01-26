@@ -15,7 +15,6 @@ import {GoogleChartsModule} from "angular-google-charts";
 import {FormsModule} from "@angular/forms";
 import {reducers} from "./store/index";
 import {SettingsEffects} from "./store/settings/settings.effects";
-import {ChartComponent} from "./components/plotter/chart/chart.component";
 import {ChartDirective} from "./components/plotter/chart/chart.directive";
 import {ChartEffects} from "./store/chart/chart.effects";
 import {RouterModule} from "@angular/router";
@@ -41,7 +40,6 @@ import {MatSliderModule} from '@angular/material/slider';
     AppComponent,
     PlotterComponent,
     TickersListComponent,
-    ChartComponent,
     ChartDirective,
     SettingsComponent,
     CandlestickComponent,
