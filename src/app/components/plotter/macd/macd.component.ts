@@ -108,7 +108,7 @@ export class MacdComponent {
       null,
       {
         seriesType: 'line',
-        series: {1 : {type: 'line', color: '#2196f3'}},
+        series: {1 : {type: 'line', color: '#2196f3'}, 2: {type: 'bars', color: '#2196f3', opacity: '0.1', strokeOpacity: '0.1'}},
         colors:['#000'],
         hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
       },

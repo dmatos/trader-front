@@ -122,7 +122,7 @@ export class ChartEffects{
                 const regexArray = ma.timestamp.match(/\d\d:\d\d/);
                 let timestamp =  regexArray?regexArray[0]:'0';
                 timestamps.push(timestamp);
-                data.push([ma.value, response.signal[index].value]);
+                data.push([ma.value, response.signal[index].value, ma.value-response.signal[index].value]);
               });
               const dataModel = new ChartDataModel(data,timestamps);
               return getMacdAndSignalSuccess({title:action.stockExchangeCode+':'+action.tickerCode, dataModel: dataModel});
