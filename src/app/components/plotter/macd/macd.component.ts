@@ -59,6 +59,7 @@ export class MacdComponent {
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
     });
+    this.dispatchMacdAndSignalAction(this.settingsModel);
   }
 
   readParams(params: Params){

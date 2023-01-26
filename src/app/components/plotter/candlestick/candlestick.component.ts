@@ -63,6 +63,8 @@ export class CandlestickComponent{
     this.route.queryParams.subscribe((params) => {
       this.readQueryParams(params);
     });
+    this.dispatchSelectTickerAction(this.settingsModel);
+    this.dispatchStockQuotesVolumeHistogramAction(this.settingsModel);
   }
 
   setSubscriptions(){
