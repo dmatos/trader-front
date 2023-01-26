@@ -15,6 +15,7 @@ import {ActivatedRoute, Params} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {Title} from "@angular/platform-browser";
 import {SettingsComponent} from "../settings/settings.component";
+import {DownloadCsvComponent} from "../download-csv/download-csv.component";
 
 @Component({
   selector: 'app-macd',
@@ -141,5 +142,17 @@ export class MacdComponent {
         this.setSubscriptions();
       });
     }
+  }
+
+  onDownload(){
+    const dialogRef = this.dialog.open(DownloadCsvComponent, {
+      width: '350px',
+      data: {
+        settings: this.getSettings()
+      },
+    });
+    dialogRef.afterClosed().subscribe((settings: SettingsModel[]) => {
+      //TODO call actual download
+    });
   }
 }
