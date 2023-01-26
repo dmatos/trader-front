@@ -15,6 +15,13 @@
   justify-items: end;
 }
 
+.hide{
+  display: grid;
+  color: #ffeeee;
+}
+
 mat-icon:hover{
+  display: grid;
+  color: black;
   cursor: pointer;
 }
