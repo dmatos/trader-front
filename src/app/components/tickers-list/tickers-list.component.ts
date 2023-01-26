@@ -22,7 +22,7 @@ export class TickersListComponent implements OnInit {
   public tickers: Ticker[];
   private settings: SettingsState | undefined = undefined;
   public filteredTickers: Ticker[];
-  public date: any;
+  public date: any = new Date().toISOString();
   public tickerCode: string;
   public searchStr: any = '';
   public stockExchangeCode: string;

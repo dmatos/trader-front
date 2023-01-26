@@ -14,6 +14,9 @@
 .input-date{
   display: grid;
   justify-self: stretch;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
 }
 
 .input-number{
@@ -45,5 +48,9 @@
 
 a:hover{
   cursor: pointer;
+}
+
+.date-hint{
+  color: white;
 }
 
