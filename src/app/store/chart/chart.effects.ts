@@ -60,7 +60,7 @@ export class ChartEffects{
         map((candlestick: CandlestickModel) => {
           let data = candlestick.candles.map( (candle: CandleModel) => [candle.low, candle.open, candle.close, candle.high]);
           let timestamps = candlestick.candles.map((candle: CandleModel) => {
-            const regexArray = candle.end.match(/\d\d:\d\d/);
+            const regexArray = candle.end.match(/\d\d:\d\d:/);
             return regexArray?regexArray[0]:'0';
           });
           let dataModel = new ChartDataModel(data,timestamps);
@@ -151,9 +151,9 @@ export class ChartEffects{
               const data: number[][] = [];
               const timestamps: string[] = [];
               response.forEach((dataPoint: {timestamp: string, volume: number}) => {
-                const regexArray = dataPoint.timestamp.match(/\d\d:\d\d/);
+                const regexArray = dataPoint.timestamp.match(/\d\d:\d\d:/);
                 let timestamp =  regexArray?regexArray[0]:'0';
-                timestamps.push(timestamp);
+                timestamps.push(timestamp.substr(0, timestamp.length-1));
                 data.push([dataPoint.volume]);
               });
               const dataModel = new ChartDataModel(data,timestamps);

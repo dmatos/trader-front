@@ -117,7 +117,7 @@ export class CandlestickComponent{
           risingColor: { strokeWidth: 1, stroke: 'black', fill:'#FFFFFF' },
         },
         colors:['#000'],
-        hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 10}}
+        hAxis: {textPosition: 'none'}
       },
       this.settingsModel,
       this.store);

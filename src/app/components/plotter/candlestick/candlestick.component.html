@@ -16,17 +16,21 @@
       </div>
     </mat-card-actions>
     <google-chart *ngIf="candlestickChartModel && candlestickData" #chart
-                  class="customChart"
+                  class="mainChart"
                   [type]="candlestickChartModel.chartType"
                   [data]="candlestickData"
-                  [options]="candlestickChartModel.options">
+                  [options]="candlestickChartModel.options"
+                  [height]="300"
+    >
     </google-chart>
     <google-chart *ngIf="volumeChartModel && volumeData"
                   #chart2
-                  class="customChart"
+                  class="auxChart"
                   [type]="volumeChartModel.chartType"
                   [data]="volumeData"
-                  [options]="volumeChartModel.options">
+                  [options]="volumeChartModel.options"
+                  [height]="200"
+    >
     </google-chart>
   </mat-card>
   <br>
