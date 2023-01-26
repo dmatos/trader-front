@@ -33,6 +33,7 @@ import {MatCardModule} from "@angular/material/card";
 import { CandlestickComponent } from './components/plotter/candlestick/candlestick.component';
 import { MacdComponent } from './components/plotter/macd/macd.component';
 import {MatSliderModule} from '@angular/material/slider';
+import { DownloadCsvComponent } from './components/plotter/download-csv/download-csv.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {MatSliderModule} from '@angular/material/slider';
     TickersListComponent,
     SettingsComponent,
     CandlestickComponent,
-    MacdComponent
+    MacdComponent,
+    DownloadCsvComponent
   ],
   imports: [
     BrowserModule,

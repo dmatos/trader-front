@@ -17,6 +17,7 @@ import {SettingsState} from "../../../store/settings/settings.state";
 import {selectTicker} from "../../../store/tickers/tickers-list.actions";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import {DownloadCsvComponent} from "../download-csv/download-csv.component";
 
 @Component({
   selector: 'app-candlestick',
@@ -179,5 +180,17 @@ export class CandlestickComponent{
         this.setSubscriptions();
       });
     }
+  }
+
+  onDownload(){
+    const dialogRef = this.dialog.open(DownloadCsvComponent, {
+      width: '350px',
+      data: {
+        settings: [this.settings.settings.get(this._KEY)]
+      },
+    });
+    dialogRef.afterClosed().subscribe((settings: SettingsModel[]) => {
+      //TODO call actual download
+    });
   }
 }
