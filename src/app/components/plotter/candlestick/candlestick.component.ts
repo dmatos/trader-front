@@ -72,6 +72,8 @@ export class CandlestickComponent{
         if (chartKey && this.candlestickChartModel && data.get(chartKey)) {
           this.candlestickChartModel.dataModel = data.get(chartKey)?.dataModel;
           this.candlestickData = this.candlestickChartModel.getDataAsArrayOfArrays();
+        } else {
+          this.candlestickData = undefined;
         }
       });
       this.volumeChartModel.getObservable$().subscribe((data) => {
@@ -79,6 +81,8 @@ export class CandlestickComponent{
           if (chartKey && this.volumeChartModel && data.get(chartKey)) {
             this.volumeChartModel.dataModel = data.get(chartKey)?.dataModel;
             this.volumeData = this.volumeChartModel.getDataAsArrayOfArrays();
+          } else {
+            this.volumeData = undefined;
           }
         }
       )

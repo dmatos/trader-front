@@ -82,6 +82,8 @@ export class MacdComponent {
         if (chartKey && this.macdChartModel && data.get(chartKey)) {
           this.macdChartModel.dataModel = data.get(chartKey)?.dataModel;
           this.macdData = this.macdChartModel.getDataAsArrayOfArrays();
+        } else {
+          this.macdData = undefined;
         }
       });
     }, 200);

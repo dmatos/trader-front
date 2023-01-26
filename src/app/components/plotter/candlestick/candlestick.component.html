@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-card *ngIf="candlestickChartModel; else noChart">
+  <mat-card *ngIf="candlestickChartModel && candlestickData; else noChart">
     <mat-card-actions class="options-bar">
       <div>
         <mat-icon
@@ -35,6 +35,6 @@
   </mat-card>
   <br>
   <ng-template #noChart>
-    <p>No chart available</p>
+    <p>No data available</p>
   </ng-template>
 </div>
