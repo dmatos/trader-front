@@ -68,7 +68,6 @@ export class CandlestickComponent{
   setSubscriptions(){
     setTimeout( () => {
       this.candlestickChartModel.getObservable$().subscribe((data) => {
-        console.log(data);
         const chartKey = this.candlestickChartModel?.chartKey;
         if (chartKey && this.candlestickChartModel && data.get(chartKey)) {
           this.candlestickChartModel.dataModel = data.get(chartKey)?.dataModel;
@@ -76,7 +75,6 @@ export class CandlestickComponent{
         }
       });
       this.volumeChartModel.getObservable$().subscribe((data) => {
-          console.log(data);
           const chartKey = this.volumeChartModel?.chartKey;
           if (chartKey && this.volumeChartModel && data.get(chartKey)) {
             this.volumeChartModel.dataModel = data.get(chartKey)?.dataModel;

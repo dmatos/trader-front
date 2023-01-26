@@ -6,5 +6,12 @@
   [end]="end"
   [settingsModel]="getCustomSettings(['chartTimeframe'])">
   </app-candlestick>
+  <app-macd
+    [tickerCode]="tickerCode"
+    [stockExchangeCode]="stockExchangeCode"
+    [begin]="begin"
+    [end]="end"
+    [settingsModel]="getCustomSettings(['macdTimeframe1', 'macdTimeframe2', 'macdSignalTimeframe'])">
+  </app-macd>
 </div>
 

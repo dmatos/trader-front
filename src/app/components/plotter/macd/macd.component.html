@@ -1,0 +1,29 @@
+<div class="container">
+  <mat-card *ngIf="macdChartModel && macdData; else noChart">
+    <mat-card-actions class="options-bar">
+      <div>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Chart settings"
+          fontIcon="settings"
+          (click)="onSettings()">
+        </mat-icon>
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Download"
+          fontIcon="download">
+        </mat-icon>
+      </div>
+    </mat-card-actions>
+    <google-chart #chart
+                  class="mainChart"
+                  [type]="macdChartModel.chartType"
+                  [data]="macdData"
+                  [options]="macdChartModel.options">
+    </google-chart>
+  </mat-card>
+  <br>
+  <ng-template #noChart>
+    <p>No chart available</p>
+  </ng-template>
+</div>

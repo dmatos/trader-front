@@ -1,0 +1,20 @@
+.container{
+  overflow-y: auto;
+  max-width: 85vw;
+}
+
+.mainChart{
+  width: auto;
+  /*height: auto;*/
+  /*border: 1px solid;*/
+  /*box-shadow: 2px 2px;*/
+}
+
+.options-bar{
+  display: grid;
+  justify-items: end;
+}
+
+mat-icon:hover{
+  cursor: pointer;
+}

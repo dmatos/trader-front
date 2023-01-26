@@ -33,6 +33,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from "@angular/material/card";
 import { CandlestickComponent } from './components/plotter/candlestick/candlestick.component';
+import { MacdComponent } from './components/plotter/macd/macd.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { CandlestickComponent } from './components/plotter/candlestick/candlesti
     ChartComponent,
     ChartDirective,
     SettingsComponent,
-    CandlestickComponent
+    CandlestickComponent,
+    MacdComponent
   ],
   imports: [
     BrowserModule,
