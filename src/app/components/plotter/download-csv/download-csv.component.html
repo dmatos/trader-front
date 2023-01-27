@@ -1,1 +1,17 @@
-<p>download-csv works!</p>
+<div class="download-csv-form">
+  <h1 mat-dialog-title>Download CSV</h1>
+  <div mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date">
+        <input matEndDate formControlName="end" placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button [mat-dialog-close]="range.value" cdkFocusInitial>Submit</button>
+  </div>
+</div>

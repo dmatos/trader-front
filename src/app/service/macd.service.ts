@@ -4,7 +4,8 @@ import {environment} from "../../environments/environment";
 import {map} from "rxjs/operators";
 import {ResponseModel} from "../model/response.model";
 import {MacdResponseModel} from "../model/macd.model";
-import {of} from "rxjs";
+import {Observable, of} from "rxjs";
+import {saveAs} from "file-saver";
 
 @Injectable({providedIn: 'root'})
 export class MacdService{
@@ -16,7 +17,7 @@ export class MacdService{
     end: string,
     timeframeInMinutes1: number,
     timeframeInMinutes2: number,
-    signaltimeframe: number,
+    signaltimeframe: number
   ){
     if(!tickerCode || !stockExchangeCode){
       return of(Error('Either tickerCode or stockExchange is not defined.'));
@@ -37,5 +38,31 @@ export class MacdService{
         return new Error(response.data);
       }
     ));
+  }
+
+  downloadCsv(
+    stockExchangeCode: string,
+    tickerCode: string,
+    begin: string,
+    end: string,
+    timeframeInMinutes1: number,
+    timeframeInMinutes2: number,
+    signaltimeframe: number
+  ){
+    return this.httpClient.post(environment.apiUrl+`/intraday/metadata/ma/macd/${stockExchangeCode}/${timeframeInMinutes1}/${timeframeInMinutes2}/${signaltimeframe}/csv`,
+      {
+        "tickerCode": tickerCode,
+        "begin": begin,
+        "end": end,
+        "timeframe": 0
+      },
+      {responseType: "text"}
+    )
+      .subscribe( (response) =>{
+        const blob =
+          new Blob([response],
+            {type: "text/plain;charset=utf-8"});
+        saveAs(blob, `${stockExchangeCode}-${tickerCode}-${begin}-${end}.csv`);
+      })
   }
 }

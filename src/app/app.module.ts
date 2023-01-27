@@ -34,6 +34,7 @@ import { CandlestickComponent } from './components/plotter/candlestick/candlesti
 import { MacdComponent } from './components/plotter/macd/macd.component';
 import {MatSliderModule} from '@angular/material/slider';
 import { DownloadCsvComponent } from './components/plotter/download-csv/download-csv.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { DownloadCsvComponent } from './components/plotter/download-csv/download
     HttpClientModule,
     GoogleChartsModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     MatDialogModule,
     MatFormFieldModule,

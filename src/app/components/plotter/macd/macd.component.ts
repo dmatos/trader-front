@@ -16,6 +16,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {Title} from "@angular/platform-browser";
 import {SettingsComponent} from "../settings/settings.component";
 import {DownloadCsvComponent} from "../download-csv/download-csv.component";
+import {MacdService} from "../../../service/macd.service";
 
 @Component({
   selector: 'app-macd',
@@ -42,7 +43,8 @@ export class MacdComponent {
     private settingsStore: Store<SettingsState>,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private titleService: Title
+    private titleService: Title,
+    private macdService: MacdService
   ){
     this.settings$ = this.settingsStore.pipe(select(selectSettings));
   }
@@ -151,8 +153,12 @@ export class MacdComponent {
         settings: this.getSettings()
       },
     });
-    dialogRef.afterClosed().subscribe((settings: SettingsModel[]) => {
-      //TODO call actual download
+    dialogRef.afterClosed().subscribe((dateRange: any) => {
+      console.log(dateRange);
+      const tf1 = this.settings.settings.get("macdTimeframe1")?.value;
+      const tf2 = this.settings.settings.get("macdTimeframe2")?.value;
+      const signal = this.settings.settings.get("macdSignalTimeframe")?.value;
+      this.macdService.downloadCsv(this.stockExchangeCode, this.tickerCode, dateRange.start, dateRange.end, tf1, tf2, signal);
     });
   }
 }
