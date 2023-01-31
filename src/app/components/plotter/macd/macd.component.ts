@@ -154,7 +154,7 @@ export class MacdComponent {
       },
     });
     dialogRef.afterClosed().subscribe((dateRange: any) => {
-      console.log(dateRange);
+      if(!dateRange) return;
       const tf1 = this.settings.settings.get("macdTimeframe1")?.value;
       const tf2 = this.settings.settings.get("macdTimeframe2")?.value;
       const signal = this.settings.settings.get("macdSignalTimeframe")?.value;
