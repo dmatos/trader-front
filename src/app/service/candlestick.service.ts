@@ -4,8 +4,6 @@ import {ResponseModel} from "../model/response.model";
 import {map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 import {of} from "rxjs";
-import {CandlestickModel} from "../model/candlestick.model";
-import {ChartState} from "../store/chart/chart.state";
 
 @Injectable({providedIn: 'root'})
 export class CandlestickService {
