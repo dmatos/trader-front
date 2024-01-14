@@ -3,11 +3,11 @@
     "run": "ng serve"
   },
   "dependencies": {
-    "@angular/animations": "^15.0.0 || ^16.0.0",
+    "@angular/animations": "^15.2.10",
     "@angular/cdk": "^15.0.4",
-    "@angular/forms": "^15.0.4",
+    "@angular/forms": "^15.2.10",
     "@angular/material": "^15.0.4",
-    "@angular/router": "^15.0.4",
+    "@angular/router": "^15.2.10",
     "@ngrx/effects": "^14.3.2",
     "@ngrx/store": "^14.3.2",
     "@ngrx/store-devtools": "^14.3.2",
@@ -18,11 +18,11 @@
     "rxjs": "^7.5.7"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^15.0.4",
-    "@angular/cli": "^15.0.4",
-    "@angular/core": "^15.0.4",
-    "@angular/platform-browser": "^15.0.4",
-    "@angular/platform-browser-dynamic": "^15.0.4",
+    "@angular-devkit/build-angular": "^15.2.10",
+    "@angular/cli": "^15.2.10",
+    "@angular/core": "^15.2.10",
+    "@angular/platform-browser": "^15.2.10",
+    "@angular/platform-browser-dynamic": "^15.2.10",
     "@types/jasmine": "^4.3.0"
   }
 }
