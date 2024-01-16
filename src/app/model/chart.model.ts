@@ -1,4 +1,3 @@
-import {ChartType} from "angular-google-charts";
 import {select, Store} from "@ngrx/store";
 import {ChartDataModel} from "./chart-data.model";
 import {ChartState} from "../store/chart/chart.state";
@@ -10,7 +9,7 @@ export class ChartModel{
   constructor(
     public title: string,
     public chartKey: string,
-    public chartType: ChartType,
+    public chartType: string,
     public dataModel: ChartDataModel | null | undefined,
     public options: {},
     public settings: SettingsModel[],

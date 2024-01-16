@@ -27,6 +27,7 @@
               "src/styles.css"
             ],
             "scripts": [
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {
@@ -66,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "trader-front:build:production"
+              "buildTarget": "trader-front:build:production"
             },
             "development": {
-              "browserTarget": "trader-front:build:development"
+              "buildTarget": "trader-front:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "trader-front:build"
+            "buildTarget": "trader-front:build"
           }
         },
         "test": {

@@ -4,10 +4,11 @@ import {createReducer, on} from "@ngrx/store";
 import {SettingsState} from "./settings.state";
 
 const initialState: SettingsState = {settings: new Map<string, SettingsModel>()};
-initialState.settings.set("chartTimeframe", {name: "timeframe", value: 3, text:"Candle width", type:"number"});
-initialState.settings.set("macdTimeframe1", {name: "timeframe1", value: 3, text:"Fast EMA", type:"number"});
-initialState.settings.set("macdTimeframe2", {name: "timeframe2", value: 12, text:"Slow EMA", type:"number"});
-initialState.settings.set("macdSignalTimeframe", {name: "signalTimeframe", value: 9, text:"Signal", type:"number"});
+initialState.settings.set("numberOfCandles", {name: "numberOfCandles", value: 7, text:"Number of candles", type:"number"});
+initialState.settings.set("chartTimeframe", {name: "timeframe", value: 5, text:"Candle width", type:"number"});
+initialState.settings.set("macdTimeframe1", {name: "timeframe1", value: 5, text:"Fast EMA", type:"number"});
+initialState.settings.set("macdTimeframe2", {name: "timeframe2", value: 25, text:"Slow EMA", type:"number"});
+initialState.settings.set("macdSignalTimeframe", {name: "signalTimeframe", value: 10, text:"Signal", type:"number"});
 
 export const settingsReducer = createReducer(
   initialState,

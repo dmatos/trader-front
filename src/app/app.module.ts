@@ -11,7 +11,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {HttpClientModule} from "@angular/common/http";
 import {CommonModule} from "@angular/common";
-import {GoogleChartsModule} from "angular-google-charts";
+import {NgChartsModule} from "ng2-charts";
 import {FormsModule} from "@angular/forms";
 import {reducers} from "./store/index";
 import {SettingsEffects} from "./store/settings/settings.effects";
@@ -35,6 +35,8 @@ import { MacdComponent } from './components/plotter/macd/macd.component';
 import {MatSliderModule} from '@angular/material/slider';
 import { DownloadCsvComponent } from './components/plotter/download-csv/download-csv.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import {NgApexchartsModule} from "ng-apexcharts";
+import {RsiComponent} from "./components/plotter/rsi/rsi.component";
 
 @NgModule({
   declarations: [
@@ -44,12 +46,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     SettingsComponent,
     CandlestickComponent,
     MacdComponent,
-    DownloadCsvComponent
+    DownloadCsvComponent,
+    RsiComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    GoogleChartsModule,
+    NgChartsModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
@@ -65,6 +68,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatCardModule,
     MatSliderModule,
+    NgApexchartsModule,
     RouterModule.forRoot(appRoutes),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([TickersListEffects, ChartEffects, SettingsEffects]),

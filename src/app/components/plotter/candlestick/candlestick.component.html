@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-card *ngIf="candlestickChartModel && candlestickData; else noChart">
+  <mat-card *ngIf="candlestickChartModel; else noChart">
     <mat-card-actions class="options-bar">
       <div>
         <mat-icon class="hide"
@@ -17,23 +17,10 @@
         </mat-icon>
       </div>
     </mat-card-actions>
-    <google-chart *ngIf="candlestickChartModel && candlestickData" #chart
-                  class="mainChart"
-                  [type]="candlestickChartModel.chartType"
-                  [data]="candlestickData"
-                  [options]="candlestickChartModel.options"
-                  [height]="300"
-    >
-    </google-chart>
-    <google-chart *ngIf="volumeChartModel && volumeData"
-                  #chart2
-                  class="auxChart"
-                  [type]="volumeChartModel.chartType"
-                  [data]="volumeData"
-                  [options]="volumeChartModel.options"
-                  [height]="200"
-    >
-    </google-chart>
+    <div id="candlestick" >
+    </div>
+    <div id="volume">
+    </div>
   </mat-card>
   <br>
   <ng-template #noChart>

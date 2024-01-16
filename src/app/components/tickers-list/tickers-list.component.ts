@@ -6,7 +6,7 @@ import {getAllTickers, selectTicker} from "../../store/tickers/tickers-list.acti
 import {selectTickers} from "../../store/tickers/tickers-list.selector";
 import {TickersState} from "../../store/tickers/tickers-list.state";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {getMacdAndSignal, getVolumeHistogram} from "../../store/chart/chart.actions";
+import {getMacdAndSignal, getRSI, getVolumeHistogram} from "../../store/chart/chart.actions";
 import {SettingsState} from "../../store/settings/settings.state";
 import {selectSettings} from "../../store/settings/settings.selector";
 import {MatDatepickerControl, MatDatepickerInputEvent, MatDatepickerPanel} from "@angular/material/datepicker";
@@ -143,6 +143,14 @@ export class TickersListComponent implements OnInit {
       timeframe1: this.settings?.settings.get("macdTimeframe1")?.value,
       timeframe2: this.settings?.settings.get("macdTimeframe2")?.value,
       signalTimeframe: this.settings?.settings.get("macdSignalTimeframe")?.value,
+    }));
+    this.store.dispatch(getRSI({
+      tickerCode: this.tickerCode,
+      stockExchangeCode: this.stockExchangeCode,
+      begin: begin,
+      end: end,
+      timeframe: this.settings?.settings.get("chartTimeframe")?.value,
+      numberOfCandles: this.settings?.settings.get("numberOfCandles")?.value
     }));
     const path = `${this.stockExchangeCode}/${this.tickerCode}`;
     this.router.navigate([{outlets: {primary: path, plotter: path}}], {queryParams: {begin: this.getBeginString(), end:this.getEndString(), search: this.searchStr}});

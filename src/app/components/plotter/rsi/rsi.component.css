@@ -5,16 +5,14 @@
 
 .mainChart{
   width: auto;
-}
-
-.auxChart{
-  width: auto;
+  /*height: auto;*/
+  /*border: 1px solid;*/
+  /*box-shadow: 2px 2px;*/
 }
 
 .options-bar{
   display: grid;
   justify-items: end;
-  height: 1vh;
 }
 
 .hide{

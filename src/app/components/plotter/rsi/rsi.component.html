@@ -1,13 +1,12 @@
 <div class="container">
-  <mat-card *ngIf="macdChartModel; else noChart">
+  <mat-card *ngIf="rsiChartModel; else noChart">
     <mat-card-actions class="options-bar">
       <div>
-        <mat-icon
-          class="hide"
-          aria-hidden="false"
-          aria-label="Chart settings"
-          fontIcon="settings"
-          (click)="onSettings()">
+        <mat-icon class="hide"
+                  aria-hidden="false"
+                  aria-label="Chart settings"
+                  fontIcon="settings"
+                  (click)="onSettings()">
         </mat-icon>
         <mat-icon
           class="hide"
@@ -18,7 +17,8 @@
         </mat-icon>
       </div>
     </mat-card-actions>
-    <div id="chart"></div>
+    <div id="rsi" >
+    </div>
   </mat-card>
   <br>
   <ng-template #noChart>

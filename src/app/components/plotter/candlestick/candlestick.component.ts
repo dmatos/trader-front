@@ -5,7 +5,6 @@ import {
   GET_VOLUME_HISTOGRAM_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
   getVolumeHistogram
 } from "../../../store/chart/chart.actions";
-import {ChartType} from "angular-google-charts";
 import {SettingsModel} from "../../../model/settings.model";
 import {select, Store} from "@ngrx/store";
 import {ChartState} from "../../../store/chart/chart.state";
@@ -18,6 +17,7 @@ import {selectTicker} from "../../../store/tickers/tickers-list.actions";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {DownloadCsvComponent} from "../download-csv/download-csv.component";
+import * as ApexCharts from 'apexcharts';
 
 @Component({
   selector: 'app-candlestick',
@@ -28,12 +28,12 @@ export class CandlestickComponent{
 
   candlestickChartModel: ChartModel = this.getComboCandlestickAndEma();
   volumeChartModel: ChartModel = this.getVolumeHistogram();
-  candlestickData: (string|number)[][]|undefined = undefined;
-  volumeData: (string|number)[][]|undefined = undefined;
   public settingsComponent = SettingsComponent;
   private settings$: Observable<any>;
   public _KEY = "chartTimeframe";
   private settings: SettingsState = {settings: new Map<string, SettingsModel>()};
+  private candlestickApexChartRenderer: ApexCharts | undefined;
+  private volumeApexChartRenderer: ApexCharts | undefined;
   @Input() tickerCode: string = '';
   @Input() stockExchangeCode: string = '';
   @Input() begin: string = '';
@@ -74,18 +74,78 @@ export class CandlestickComponent{
         const chartKey = this.candlestickChartModel?.chartKey;
         if (chartKey && this.candlestickChartModel && data.get(chartKey)) {
           this.candlestickChartModel.dataModel = data.get(chartKey)?.dataModel;
-          this.candlestickData = this.candlestickChartModel.getDataAsArrayOfArrays();
-        } else {
-          this.candlestickData = undefined;
+          if (this.candlestickChartModel) {
+            let candleData: { x: string, y: number[] | undefined }[] = [];
+            this.candlestickChartModel.dataModel?.timestamps.forEach((ts, index) => {
+              let candle = this.candlestickChartModel.dataModel?.data[index];
+              candleData?.push({x: ts, y: candle});
+            });
+            let options = {
+              chart: {
+                type: this.candlestickChartModel.chartType,
+                id: 'candlestick-1',
+                height: 250
+              },
+              dataLabels: {
+                enabled: false
+              },
+              xaxis: {
+                labels: {
+                  show: false
+                }
+              },
+              series: [
+                {
+                  name: 'candlestick',
+                  data: candleData ? candleData : []
+                }
+              ]
+            }
+            if(this.candlestickApexChartRenderer){
+              this.candlestickApexChartRenderer.destroy();
+            }
+            this.candlestickApexChartRenderer = new ApexCharts(document.querySelector("#candlestick"), options);
+            this.candlestickApexChartRenderer.render();
+          }
         }
       });
       this.volumeChartModel.getObservable$().subscribe((data) => {
           const chartKey = this.volumeChartModel?.chartKey;
           if (chartKey && this.volumeChartModel && data.get(chartKey)) {
             this.volumeChartModel.dataModel = data.get(chartKey)?.dataModel;
-            this.volumeData = this.volumeChartModel.getDataAsArrayOfArrays();
-          } else {
-            this.volumeData = undefined;
+            let volume:(number|string)[] = [];
+            this.volumeChartModel.dataModel?.data.forEach(
+              (datapointArray) => {
+                volume.push(datapointArray[0])
+              }
+            );
+            let options = {
+              chart: {
+                type: this.volumeChartModel.chartType,
+                height: 100,
+                id: 'volume-1',
+              },
+              dataLabels: {
+                enabled: false
+              },
+              xaxis: {
+                categories:  this.volumeChartModel.dataModel?.timestamps,
+                labels: {
+                  show: false
+                }
+              },
+              series: [
+                {
+                  name: 'volume',
+                  data:  volume
+                }
+              ]
+            }
+            if(this.volumeApexChartRenderer){
+              this.volumeApexChartRenderer.destroy();
+            }
+            this.volumeApexChartRenderer = new ApexCharts(document.querySelector("#volume"), options);
+            this.volumeApexChartRenderer.render();
           }
         }
       )
@@ -111,7 +171,7 @@ export class CandlestickComponent{
     return new ChartModel(
       'ComboCandlestickAndEma',
       GET_COMBO_CANDLESTICK_AND_EMA_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
-      ChartType.ComboChart,
+      'candlestick',
       null,
       {
         seriesType: 'candlesticks',
@@ -132,7 +192,7 @@ export class CandlestickComponent{
     return new ChartModel(
       'VolumeHistogram',
       GET_VOLUME_HISTOGRAM_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
-      ChartType.ComboChart,
+      'bar',
       null,
       {
         seriesType: 'bars',

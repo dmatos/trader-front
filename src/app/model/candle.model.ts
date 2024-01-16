@@ -5,7 +5,6 @@ export class CandleModel{
     public open: number = 0,
     public close: number = 0,
     public begin: string = '',
-    public end: string = '',
-    public lowOrHigh: number = 0) {
+    public end: string = '') {
   }
 }

@@ -13,5 +13,12 @@
     [end]="end"
     [settingsModel]="getCustomSettings(['macdTimeframe1', 'macdTimeframe2', 'macdSignalTimeframe'])">
   </app-macd>
+  <app-rsi
+    [tickerCode]="tickerCode"
+    [stockExchangeCode]="stockExchangeCode"
+    [begin]="begin"
+    [end]="end"
+    [settingsModel]="getCustomSettings(['chartTimeframe', 'numberOfCandles'])">
+  </app-rsi>
 </div>
 

@@ -4,7 +4,6 @@ import {
   GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
   getMacdAndSignal
 } from "../../../store/chart/chart.actions";
-import {ChartType} from "angular-google-charts";
 import {select, Store} from "@ngrx/store";
 import {ChartState} from "../../../store/chart/chart.state";
 import {SettingsState} from "../../../store/settings/settings.state";
@@ -17,6 +16,7 @@ import {Title} from "@angular/platform-browser";
 import {SettingsComponent} from "../settings/settings.component";
 import {DownloadCsvComponent} from "../download-csv/download-csv.component";
 import {MacdService} from "../../../service/macd.service";
+import * as ApexCharts from 'apexcharts';
 
 @Component({
   selector: 'app-macd',
@@ -28,8 +28,8 @@ export class MacdComponent {
   private settings$: Observable<any>;
   private settings: SettingsState = {settings: new Map<string, SettingsModel>()};
   macdChartModel: ChartModel = this.getMacdAndSignal()
-  macdData: (string|number)[][]|undefined = undefined;
   public settingsComponent = SettingsComponent;
+  private apexChartRenderer: ApexCharts | undefined;
   private _KEYS = ["macdTimeframe1", "macdTimeframe2", "macdSignalTimeframe"];
   @Input() tickerCode: string = '';
   @Input() stockExchangeCode: string = '';
@@ -85,9 +85,51 @@ export class MacdComponent {
         const chartKey = this.macdChartModel?.chartKey;
         if (chartKey && this.macdChartModel && data.get(chartKey)) {
           this.macdChartModel.dataModel = data.get(chartKey)?.dataModel;
-          this.macdData = this.macdChartModel.getDataAsArrayOfArrays();
-        } else {
-          this.macdData = undefined;
+          let macdData:number[] = [];
+          let signalData:number[] = [];
+          let diff:number[] = [];
+          this.macdChartModel.dataModel?.data.forEach((dataPoint) => {
+            macdData.push(dataPoint[0]);
+            signalData.push(dataPoint[1]);
+            diff.push(dataPoint[2]);
+          })
+          let options = {
+            chart: {
+              type: "line",
+              height: 150
+            },
+            stroke: {
+              width: [1,1,4]
+            },
+            series: [
+              {
+                name: "macd",
+                type: "line",
+                data: macdData
+              },
+              {
+                name: "signal",
+                type: "line",
+                data: signalData
+              },
+              {
+                name: "histogram",
+                type: "bar",
+                data: diff
+              }
+            ],
+            xaxis: {
+              categories:  this.macdChartModel.dataModel?.timestamps,
+              labels: {
+                show: false
+              }
+            },
+          };
+          if(this.apexChartRenderer){
+            this.apexChartRenderer.destroy();
+          }
+          this.apexChartRenderer = new ApexCharts(document.querySelector("#chart"), options);
+          this.apexChartRenderer.render();
         }
       });
     }, 200);
@@ -107,7 +149,7 @@ export class MacdComponent {
     return new ChartModel(
       'ComboMacdAndLine',
       GET_COMBO_MACD_AND_SIGNAL_BY_TICKER_CODE_AND_DATE_RANGE_SUCCESS_TYPE,
-      ChartType.ComboChart,
+      'bar',
       null,
       {
         seriesType: 'line',

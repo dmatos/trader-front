@@ -9,7 +9,13 @@ import {
   getCandlestickAndEmaSuccess,
   getMacdAndSignal,
   getMacdAndSignalFail,
-  getMacdAndSignalSuccess, getVolumeHistogram, getVolumeHistogramFail, getVolumeHistogramSuccess
+  getMacdAndSignalSuccess,
+  getRSI,
+  getRSIFail,
+  getRSISuccess,
+  getVolumeHistogram,
+  getVolumeHistogramFail,
+  getVolumeHistogramSuccess
 } from "./chart.actions";
 import {catchError, map} from "rxjs/operators";
 import {EmaService} from "../../service/ema.service";
@@ -19,6 +25,7 @@ import {CandleModel} from "../../model/candle.model";
 import {ChartState} from "./chart.state";
 import {MacdService} from "../../service/macd.service";
 import {StockQuotesService} from "../../service/stock-quotes.service";
+import {RsiService} from "../../service/rsi.service";
 
 @Injectable()
 export class ChartEffects{
@@ -27,6 +34,7 @@ export class ChartEffects{
     private candlestickService: CandlestickService,
     private emaService: EmaService,
     private stockQuoteService: StockQuotesService,
+    private rsiService: RsiService,
     private macdService: MacdService
   ) {}
 
@@ -53,14 +61,41 @@ export class ChartEffects{
     )
   );
 
+  getRsi = createEffect((): Observable<any> =>
+    this.actions$.pipe(
+      ofType(getRSI),
+      switchMap((action) => {
+        return this.rsiService.getRsi(
+          action.tickerCode, action.stockExchangeCode, action.begin,
+          action.end, action.timeframe, action.numberOfCandles)
+          .pipe(
+            map((response) => {
+              if(response instanceof Error){
+                return getRSIFail({error: response});
+              }
+              const data:number[][] = [];
+              const timestamps: string[] = [];
+              response.rsiValuesList.forEach((datapoint: {timestamp: string, value: number}) => {
+                data.push([datapoint.value]);
+                const regexArray = datapoint.timestamp.match(/\d\d:\d\d/);
+                timestamps.push(regexArray?regexArray[0]:'0');
+              });
+              const dataModel = new ChartDataModel(data,timestamps);
+              return getRSISuccess({title:action.stockExchangeCode+':'+action.tickerCode, dataModel: dataModel})
+            })
+          )
+      })
+    )
+  );
+
   getCandlestickAndEmaAux$(tickerCode: string, stockExchangeCode: string, begin: string, end: string, timeframe: number):Observable<any>{
     return this.candlestickService.getCandlestickByTickerCodeAndDateRange(tickerCode, stockExchangeCode, begin, end, timeframe)
       .pipe(
         filter( (candlestick: CandlestickModel) => !!candlestick),
         map((candlestick: CandlestickModel) => {
-          let data = candlestick.candles.map( (candle: CandleModel) => [candle.low, candle.open, candle.close, candle.high]);
+          let data = candlestick.candles.map( (candle: CandleModel) => [candle.open, candle.high, candle.low, candle.close]);
           let timestamps = candlestick.candles.map((candle: CandleModel) => {
-            const regexArray = candle.end.match(/\d\d:\d\d:/);
+            const regexArray = candle.end.match(/\d\d:\d\d/);
             return regexArray?regexArray[0]:'0';
           });
           let dataModel = new ChartDataModel(data,timestamps);
@@ -151,9 +186,9 @@ export class ChartEffects{
               const data: number[][] = [];
               const timestamps: string[] = [];
               response.forEach((dataPoint: {timestamp: string, volume: number}) => {
-                const regexArray = dataPoint.timestamp.match(/\d\d:\d\d:/);
+                const regexArray = dataPoint.timestamp.match(/\d\d:\d\d/);
                 let timestamp =  regexArray?regexArray[0]:'0';
-                timestamps.push(timestamp.substr(0, timestamp.length-1));
+                timestamps.push(timestamp);
                 data.push([dataPoint.volume]);
               });
               const dataModel = new ChartDataModel(data,timestamps);
