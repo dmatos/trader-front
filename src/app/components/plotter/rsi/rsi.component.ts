@@ -103,7 +103,7 @@ export class RsiComponent {
               },
               series: [
                 {
-                  name: "rsi",
+                  name: "RSI",
                   type: "line",
                   data: dataToPlot
                 },

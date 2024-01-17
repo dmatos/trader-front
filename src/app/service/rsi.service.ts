@@ -4,8 +4,6 @@ import {of} from "rxjs";
 import {ResponseModel} from "../model/response.model";
 import {environment} from "../../environments/environment";
 import {map} from "rxjs/operators";
-import {MacdResponseModel} from "../model/macd.model";
-import {DataPointModel} from "../model/data-point.model";
 import {RsiResponseModel} from "../model/rsi.model";
 
 @Injectable({providedIn: 'root'})

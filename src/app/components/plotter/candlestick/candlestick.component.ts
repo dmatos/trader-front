@@ -76,28 +76,83 @@ export class CandlestickComponent{
           this.candlestickChartModel.dataModel = data.get(chartKey)?.dataModel;
           if (this.candlestickChartModel) {
             let candleData: { x: string, y: number[] | undefined }[] = [];
+            let ema: { x: string, y: number | undefined }[] = [];
+            let pivot: { x: string, y: number | undefined }[] = [];
+            let r1: { x: string, y: number | undefined }[] = [];
+            let r2: { x: string, y: number | undefined }[] = [];
+            let r3: { x: string, y: number | undefined }[] = [];
+            let s1: { x: string, y: number | undefined }[] = [];
+            let s2: { x: string, y: number | undefined }[] = [];
+            let s3: { x: string, y: number | undefined }[] = [];
+
             this.candlestickChartModel.dataModel?.timestamps.forEach((ts, index) => {
               let candle = this.candlestickChartModel.dataModel?.data[index];
               candleData?.push({x: ts, y: candle});
+              ema.push({x: ts, y: candle ? candle[4] : 0});
+              pivot.push({x: ts, y: candle ? candle[5] : 0});
+              r1.push({x: ts, y: candle ? candle[6] : 0});
+              r2.push({x: ts, y: candle ? candle[7] : 0});
+              r3.push({x: ts, y: candle ? candle[8] : 0});
+              s1.push({x: ts, y: candle ? candle[9] : 0});
+              s2.push({x: ts, y: candle ? candle[10] : 0});
+              s3.push({x: ts, y: candle ? candle[11] : 0});
             });
+
             let options = {
               chart: {
-                type: this.candlestickChartModel.chartType,
                 id: 'candlestick-1',
                 height: 250
               },
               dataLabels: {
                 enabled: false
               },
+              stroke: {
+                width: 1,
+              },
               xaxis: {
+                categories:  this.candlestickChartModel.dataModel?.timestamps,
                 labels: {
                   show: false
                 }
               },
+              colors: ["rgba(0,183,70,0.85)", '#0a20ff', '#ff0a0a'],
               series: [
                 {
                   name: 'candlestick',
-                  data: candleData ? candleData : []
+                  data: candleData ? candleData : [],
+                  type: this.candlestickChartModel.chartType
+                }, {
+                  name: 'ema',
+                  data: ema ? ema : [],
+                  type: 'line'
+                }, {
+                  name: 'pivot',
+                  data: pivot ? pivot : [],
+                  type: 'line'
+                }, {
+                  name: 'r1',
+                  data: r1 ? r1 : [],
+                  type: 'line'
+                }, {
+                  name: 'r2',
+                  data: r2 ? r2 : [],
+                  type: 'line'
+                }, {
+                  name: 'r3',
+                  data: r3 ? r3 : [],
+                  type: 'line'
+                }, {
+                  name: 's1',
+                  data: s1 ? s1 : [],
+                  type: 'line'
+                }, {
+                  name: 's2',
+                  data: s2 ? s2 : [],
+                  type: 'line'
+                }, {
+                  name: 's3',
+                  data: s3 ? s3 : [],
+                  type: 'line'
                 }
               ]
             }
